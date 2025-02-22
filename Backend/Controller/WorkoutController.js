@@ -1,6 +1,6 @@
 const workout = require("../Model/Workout");
 
-const addworkout = async (req, res) =>{
+const conworkout = async (req, res) =>{
     const {name, sets, reps, weight} = req.body;
     try {
         const result = await workout.create.findOne({
@@ -14,4 +14,4 @@ const addworkout = async (req, res) =>{
         res.status(500).json({message: "Something Went Wrong"})
     }
 }
-module.exports = {addworkout}
+module.exports = {conworkout}

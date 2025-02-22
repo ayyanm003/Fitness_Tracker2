@@ -1,13 +1,14 @@
 const express = require('express');
 const app = express();
 const userroute = require('./Router/userRoutes');
+// const workoutrouter = require('./Router/workoutRoutes');
 const User = require('./Model/User');
 // require('dotenv').config();
+app.use(express.json());
 const mongoose = require('mongoose');
+
 app.use("/user", userroute)
-
-
-
+// app.use("/workout", workoutrouter)
 
 // let UserData = async function (){
 //     try {
