@@ -23,6 +23,12 @@ const registerUser = async (req, res) => {
             email : email,    
             password : hashedpassword,
             profilePicture
+
+            // name: "name",
+            // email : "email",    
+            // password : "hashedpassword",
+            // profilePicture: "fff"
+
         });
 
         const token = jwt.sign({email : result.email, id : result.id}, secretKey, {expiresIn: "1h"})
@@ -33,7 +39,5 @@ const registerUser = async (req, res) => {
         res.status(500).json({message: "Something Went Wrong"})
     }
 };
-
-
 
 module.exports = { registerUser };

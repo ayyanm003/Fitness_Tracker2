@@ -1,4 +1,20 @@
-// const Nutrition = require("../Model/Nutrition");
+const Nutrition = require("../Model/Nutrition");
+
+const addnutrition = async (req, res)=>{
+    const {name, calories, protein, carbs, fats} = req.body;
+        try {
+            const result = await Nutrition.create({
+                name : name,
+                calories : calories,
+                protein : protein,
+                carbs : carbs,
+                fats : fats
+            })
+    } catch (error) {
+        console.log(error)
+    }
+}
+module.exports = {addnutrition} ;
 
 // const addnutrition = async (req, res) => {
 //         const {name, calories, protein, carbs, fats} = req.body;
@@ -24,15 +40,15 @@
 // module.exports = {addnutrition} ;
 
 
-const Nutrition = require("../Model/Nutrition");
+// const Nutrition = require("../Model/Nutrition");
 
-const addNutrition = async (req, res) => {
-    try {
-        const nutrition = await Nutrition.create(req.body);
-        res.status(201).json({ message: "Nutrition added", nutrition });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
+// const addNutrition = async (req, res) => {
+//     try {
+//         const nutrition = await Nutrition.create(req.body);
+//         res.status(201).json({ message: "Nutrition added", nutrition });
+//     } catch (error) {
+//         res.status(500).json({ error: error.message });
+//     }
+// };
 
-module.exports = { addNutrition };
+// module.exports = { addNutrition };

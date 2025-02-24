@@ -1,21 +1,24 @@
 const express = require('express');
 const app = express();
 const userroute = require('./Router/userRoutes');
-// const workoutrouter = require('./Router/workoutRoutes');
+const workoutrouter = require('./Router/workoutRoutes');
 const User = require('./Model/User');
+// const workoutData = require("./Model/Workout")
 // require('dotenv').config();
 app.use(express.json());
 const mongoose = require('mongoose');
+const nrouter = require('./Router/NutritionRoutes');
 
-app.use("/user", userroute)
-// app.use("/workout", workoutrouter)
-
-// let UserData = async function (){
+app.use("/user", userroute);
+app.use("/rworkout", workoutrouter);
+app.use("/rnutrition", nrouter);
+// let workoutData = async function (){
 //     try {
-//     await User.create({
-//          name: "Ayan",
-//          email: "ayan@gmail.com",
-//          password: "123",
+//     await workout.create({
+//          name: "name",
+//          sets: 4,
+//          reps: 3,
+//         weight : 33
 //      }).then(()=>{
 //          console.log("User created successfully")
 //      }).catch((e)=>{
@@ -33,7 +36,7 @@ app.get("/", (req, res) => {
 mongoose.connect("mongodb+srv://admin:admin123@clusteraptech.sw28l.mongodb.net/merndb?retryWrites=true&w=majority&appName=Clusteraptech")
 .then(()=>{
     app.listen(3005, ()=> {
-        // UserData();
+        // workoutData();
         console.log("Server Start")
     });
 }).catch((error)=>{
