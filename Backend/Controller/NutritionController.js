@@ -8,8 +8,11 @@ const addnutrition = async (req, res)=>{
                 calories : calories,
                 protein : protein,
                 carbs : carbs,
-                fats : fats
+                fats : fats,
+                
             })
+
+            res.status(201).json({res : result ,msg:"Nutrition added"})
     } catch (error) {
         console.log(error)
     }

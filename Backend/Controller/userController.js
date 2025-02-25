@@ -40,4 +40,21 @@ const registerUser = async (req, res) => {
     }
 };
 
-module.exports = { registerUser };
+const signup = async (req, res) => {
+    const {email, password} = req.body;
+try {
+    const exitstinguset = await user.findOne({email : email});
+    if(!exitstinguset){
+        return res.status(400).json({ message: "User already exists" });
+    }
+    const matchpassword = await bcrypt.compare(password, exitstinguset.password);
+    if(!matchpassword){
+        return res.status(400).json({ message: "incerrect password" });
+    }
+    const token = jwt.sign({email : exitstinguset.email, id : exitstinguset.id}, secretKey)
+} catch (error) {
+    
+}
+}
+
+module.exports = { registerUser, signup };

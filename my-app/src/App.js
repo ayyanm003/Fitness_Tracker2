@@ -10,6 +10,8 @@ import Services from './component/user/Services';
 import Gallery from './component/user/Gallery';
 import Footer from './component/user/Footer';
 import User from './component/outlet/User';
+import Signup from './component/Signup';
+import Signin from './component/Signin';
 
 
 
@@ -17,8 +19,9 @@ function App() {
   return (
     <div className="App">
 
-    <User/>
-
+    {/* <User/> */}
+    {/* <Signup/> */}
+    <Signin/>
     </div>
   )
 }
