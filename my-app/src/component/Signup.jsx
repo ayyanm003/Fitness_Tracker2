@@ -1,14 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
+const navigate = useNavigate;
 
 const Signup = () => {
+
+    const [name, setname] = useState("")
+    const [email, setemail] = useState("");
+    const [password, setpassword] = useState("");
+
+    const handel = (e) => {
+        e.preventDefault();
+
+        // let userdata = {
+        //     name,
+        //     email,
+        //     password,
+        // }
+
+        try {
+            let res = axios.post("http://localhost:3005/user/register", {
+                name : name, email : email, password : password,
+            }, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(()=>{console.log("object")}).catch((a)=>{console.log(a)});
+            alert("Successful")
+            navigate("/");
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
 
         <div className="container d-flex justify-content-center align-items-center vh-100">
             <div className="card p-4 shadow" style={{ width: "350px" }}>
                 <h3 className="text-center">Signup - Fitness Tracker</h3>
-                <form >
+                <form onSubmit={handel}>
                     <div className="mb-3">
                         <label className="form-label">Full Name</label>
                         <input
@@ -16,8 +47,8 @@ const Signup = () => {
                             name="name"
                             className="form-control"
                             placeholder="Enter your name"
-                            //   value={formData.name}
-                            //   onChange={handleChange}
+                            value={name}
+                            onChange={(e) => { setname(e.target.value) }}
                             required
                         />
                     </div>
@@ -28,8 +59,8 @@ const Signup = () => {
                             name="email"
                             className="form-control"
                             placeholder="Enter your email"
-                            //   value={formData.email}
-                            //   onChange={handleChange}
+                            value={email}
+                            onChange={(e) => { setemail(e.target.value) }}
                             required
                         />
                     </div>
@@ -40,8 +71,8 @@ const Signup = () => {
                             name="password"
                             className="form-control"
                             placeholder="Enter password"
-                            //   value={formData.password}
-                            //   onChange={handleChange}
+                            value={password}
+                            onChange={(e) => { setpassword(e.target.value) }}
                             required
                         />
                     </div>

@@ -1,12 +1,13 @@
+require("dotenv").config();
+
 const user = require('../Model/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-require("dotenv").config();
-const secretKey = process.env.SECRET_KEY;
+const secretKey = "hhh";
 
 const registerUser = async (req, res) => {
-
+// console.log(secretKey)
     
     try {
       
@@ -44,10 +45,9 @@ const registerUser = async (req, res) => {
 
 const signin = async (req, res) => {
     const { email, password } = req.body;
-
     try {
         // Check if user exists
-        const existingUser = await User.findOne({ email });
+        const existingUser = await user.findOne({ email });
         if (!existingUser) {
             return res.status(404).json({ message: "User not found" });
         }

@@ -19,9 +19,18 @@ function App() {
   return (
     <div className="App">
 
-    <User/>
+    {/* <User/> */}
     {/* <Signup/> */}
     {/* <Signin/> */}
+
+<BrowserRouter>
+<Routes>
+  <Route path='/' element={<Signin/>} />
+  <Route path='/signup' element={<Signup/>} />
+
+</Routes>
+</BrowserRouter>
+
     </div>
   )
 }

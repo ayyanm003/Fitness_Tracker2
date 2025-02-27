@@ -1,5 +1,7 @@
 const express = require('express');
+const cors = require("cors");
 const app = express();
+app.use(cors()); 
 const userroute = require('./Router/userRoutes');
 const workoutrouter = require('./Router/workoutRoutes');
 const User = require('./Model/User');
@@ -8,6 +10,9 @@ const User = require('./Model/User');
 app.use(express.json());
 const mongoose = require('mongoose');
 const nrouter = require('./Router/NutritionRoutes');
+
+
+
 
 app.use("/user", userroute);
 app.use("/rworkout", workoutrouter);
