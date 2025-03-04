@@ -4,16 +4,16 @@ const conworkout = async (req, res) => {
     const { name, sets, reps, weight } = req.body;
     try {
         const result = await workout.create({
-            name: name,
-            sets: sets,
-            reps: reps,
-            weight: weight 
-
-            // name: "puchup",
-            // sets: 12,
-            // reps: 3,
-            // weight: 80
-        })
+            // user: userId,  // User ka ID required hai
+            exercises: [{ name, sets, reps, weight }]
+        });
+        
+        // const result = await workout.create({
+        //     name,
+        //     sets,
+        //     reps,
+        //     weight
+        // })
         // res.send("hello")
     } catch (error) {
         console.log(error);

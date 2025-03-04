@@ -37,7 +37,7 @@ const Navbar = () => {
 						<li><a className="dropdown-item" href="blog-single.html">Blog Details</a></li>
 					</ul>
 				</li>
-				<li className="nav-item"><a className="nav-link" href="contact.html">Contact</a></li>
+				<li className="nav-item"><a className="nav-link" href="/usercontect">Contact</a></li>
 			</ul>
 			<div className="my-md-0 ml-lg-4 mt-4 mt-lg-0 ml-auto text-lg-right mb-3 mb-lg-0">
 				<a href="tel:+23-345-67890">

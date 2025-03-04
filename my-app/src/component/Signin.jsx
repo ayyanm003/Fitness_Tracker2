@@ -11,16 +11,20 @@ const Signin = () => {
     const handel = async (e) => {
         e.preventDefault();
 
-        const datasw = axios.get("http://localhost:3005/user/signin");
-        const fetch_data = (await datasw).data
-        console.log(fetch_data)
-        const save = fetch_data.find((e)=> e.email === email && e.password === password)
-        console.log(save)
-        if(save){
-            navigate("/signup")
-        }
-        else{
-            alert("Something Went Wrong")
+        try {
+            const datasw = axios.post("http://localhost:3005/user/signin", {
+             email : email, password : password,
+            }, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(()=>{console.log("object")}).catch((a)=>{console.log(a)});
+            alert("Successful")
+            navigate("/");
+      
+      
+        } catch (error) {
+            console.log(error)
         }
 
         // try {

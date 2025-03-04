@@ -3,7 +3,6 @@ import './App.css';
 // import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './component/user/Navbar';
-import Slider from './component/user/Slider';
 import Introduction from './component/user/Introduction';
 import About from './component/user/About';
 import Services from './component/user/Services';
@@ -12,6 +11,14 @@ import Footer from './component/user/Footer';
 import User from './component/outlet/User';
 import Signup from './component/Signup';
 import Signin from './component/Signin';
+import Slider from './component/user/Slider';
+import Sidebar from './admin/component/Sidebar';
+import Deshboard from './admin/page/Deshboard';
+import Usercontect from './component/user/Usercontect';
+import Addworkout from './admin/component/Addworkout';
+import Showcontect from './admin/component/Showcontect';
+import Showuser from './admin/component/Showuser';
+
 
 
 
@@ -19,17 +26,31 @@ function App() {
   return (
     <div className="App">
 
-    {/* <User/> */}
-    {/* <Signup/> */}
-    {/* <Signin/> */}
+      {/* <User/> */}
+      {/* <Signup/> */}
+      {/* <Signin/> */}
 
-<BrowserRouter>
-<Routes>
-  <Route path='/' element={<Signin/>} />
-  <Route path='/signup' element={<Signup/>} />
 
-</Routes>
-</BrowserRouter>
+      {/* <Deshboard /> */}
+
+      <BrowserRouter>
+        <Routes>
+          {/* ------------ user ------- */}
+          <Route path='/' element={<User/>} />
+          <Route path='/usercontect' element={<Usercontect/>} />
+          {/* <Route path='/admindeshboard' element={<Deshboard/>} />  */}
+          
+          <Route path='/signin' element={<Signin/>} />
+          <Route path='/signup' element={<Signup/>} />
+          
+          {/* admin outlet  */}
+          <Route path='/admindeshboard' element={<Deshboard/>}>
+            <Route path='addworkout' element={<Addworkout />} />
+            <Route path='showcontect' element={<Showcontect />} />
+            <Route path='showuser' element={<Showuser />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
 
     </div>
   )
