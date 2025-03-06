@@ -18,7 +18,7 @@ const conrouter = require('./Router/ContectRoutes');
 app.use("/user", userroute);
 app.use("/rworkout", workoutrouter);
 app.use("/rnutrition", nrouter);
-app.use("/usercontect", conrouter)
+app.use("/usercontect", conrouter);
 // let workoutData = async function (){
 //     try {
 //     await workout.create({

@@ -18,6 +18,7 @@ import Usercontect from './component/user/Usercontect';
 import Addworkout from './admin/component/Addworkout';
 import Showcontect from './admin/component/Showcontect';
 import Showuser from './admin/component/Showuser';
+import Pagedeshboard from './admin/component/Pagedeshboard';
 
 
 
@@ -36,18 +37,21 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/* ------------ user ------- */}
-          <Route path='/' element={<User/>} />
-          <Route path='/usercontect' element={<Usercontect/>} />
+          <Route path='/' element={<User />} />
+          <Route path='/usercontect' element={<Usercontect />} />
           {/* <Route path='/admindeshboard' element={<Deshboard/>} />  */}
-          
-          <Route path='/signin' element={<Signin/>} />
-          <Route path='/signup' element={<Signup/>} />
-          
+
+          <Route path='/signin' element={<Signin />} />
+          <Route path='/signup' element={<Signup />} />
+
           {/* admin outlet  */}
-          <Route path='/admindeshboard' element={<Deshboard/>}>
+          <Route path='/admindeshboard' element={<Deshboard />}>
+            <Route index element={<Pagedeshboard />} />
             <Route path='addworkout' element={<Addworkout />} />
             <Route path='showcontect' element={<Showcontect />} />
             <Route path='showuser' element={<Showuser />} />
+
+
           </Route>
         </Routes>
       </BrowserRouter>

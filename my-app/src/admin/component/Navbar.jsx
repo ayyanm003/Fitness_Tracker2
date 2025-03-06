@@ -1,6 +1,13 @@
 import React from 'react'
-
+import { Link, useNavigate } from 'react-router-dom';
 const Navbar = () => {
+    const navigate = useNavigate();
+
+    const logout = () => {
+        let ls_data = localStorage.removeItem("admindata")
+        navigate('/signin')
+    }
+
     return (
         <>
             <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
@@ -52,14 +59,18 @@ const Navbar = () => {
                     </li>
 
                     {/* <!-- Nav Item - Alerts --> */}
-                    <li class="nav-item dropdown no-arrow mx-1">
+                    {/* <li class="nav-item dropdown no-arrow mx-1">
                         <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-bell fa-fw"></i>
-                            {/* <!-- Counter - Alerts --> */}
-                            <span class="badge badge-danger badge-counter">3+</span>
-                        </a>
-                        {/* <!-- Dropdown - Alerts --> */}
+                            <i class="fas fa-bell fa-fw"></i> */}
+
+                    {/* <!-- Counter - Alerts --> */}
+
+                    {/* <span class="badge badge-danger badge-counter">3+</span>
+                        </a> */}
+
+                    {/* <!-- Dropdown - Alerts --> */}
+                    {/*                         
                         <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                             aria-labelledby="alertsDropdown">
                             <h6 class="dropdown-header">
@@ -100,16 +111,16 @@ const Navbar = () => {
                             </a>
                             <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                         </div>
-                    </li>
+                    </li> */}
 
                     {/* <!-- Nav Item - Messages --> */}
                     <li class="nav-item dropdown no-arrow mx-1">
-                        <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
+                        {/* <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-envelope fa-fw"></i>
-                            {/* <!-- Counter - Messages --> */}
-                            <span class="badge badge-danger badge-counter">7</span>
-                        </a>
+                            <i class="fas fa-envelope fa-fw"></i> */}
+                        {/* <!-- Counter - Messages --> */}
+                        {/* <span class="badge badge-danger badge-counter">7</span>
+                        </a> */}
                         {/* <!-- Dropdown - Messages --> */}
                         <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                             aria-labelledby="messagesDropdown">
@@ -174,9 +185,9 @@ const Navbar = () => {
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                            {/* <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span> */}
                             <img class="img-profile rounded-circle"
-                                src="img/undraw_profile.svg" />
+                                src="/d_assets/img/undraw_profile.svg" />
                         </a>
                         {/* <!-- Dropdown - User Information --> */}
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -193,11 +204,12 @@ const Navbar = () => {
                                 <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Activity Log
                             </a>
+                            {/* data-toggle="modal" data-target="#logoutModal" */}
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                            <button class="dropdown-item" onClick={logout}>
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Logout
-                            </a>
+                            </button>
                         </div>
                     </li>
 

@@ -6,7 +6,7 @@ const Navbar = () => {
         <nav className="navbar navbar-expand-lg navigation fixed-top" id="navbar">
 	<div className="container-fluid">
 		<a className="navbar-brand" href="index.html">
-			<h2 className="text-white text-capitalize"><i/>Gym<span className="text-color">Fit</span></h2>
+			<h2 className="text-white text-capitalize"><i/>Fitness <span className="text-color">Tracker</span></h2>
 		</a>
 		<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsid"
 			aria-controls="navbarsid" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,11 +39,11 @@ const Navbar = () => {
 				</li>
 				<li className="nav-item"><a className="nav-link" href="/usercontect">Contact</a></li>
 			</ul>
-			<div className="my-md-0 ml-lg-4 mt-4 mt-lg-0 ml-auto text-lg-right mb-3 mb-lg-0">
+			{/* <div className="my-md-0 ml-lg-4 mt-4 mt-lg-0 ml-auto text-lg-right mb-3 mb-lg-0">
 				<a href="tel:+23-345-67890">
 					<h3 className="text-color mb-0"><i className="ti-mobile mr-2"></i>+23-563-5688</h3>
 				</a>
-			</div>
+			</div> */}
 		</div>
 	</div>
 </nav> 

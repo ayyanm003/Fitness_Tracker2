@@ -1,41 +1,46 @@
 import axios from 'axios';
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 const Signin = () => {
 
-    const navigate = useNavigate;
+    const navigate = useNavigate();
 
     const [email, setemail] = useState("");
     const [password, setpassword] = useState("");
-    const [savedata, setsavedata] = useState("")
+    const [savedata, setsavedata] = useState([])
     const handel = async (e) => {
         e.preventDefault();
-
         try {
-            const datasw = axios.post("http://localhost:3005/user/signin", {
-             email : email, password : password,
+            const response = await axios.post("http://localhost:3005/user/signin", {
+                email: email,
+                password: password
             }, {
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            }).then(()=>{console.log("object")}).catch((a)=>{console.log(a)});
-            alert("Successful")
-            navigate("/");
-      
-      
+                headers: { "Content-Type": "application/json" }
+            });
+            // setsavedata(response.data)
+            const a = response.data
+            console.log(a.result.role)
+            // const localdata = (a.result.role,a.result.email,a.result._id)
+            // console.log("data g",localdata)
+            // console.log("Login Successful", response.data);
+            if (a.result.role === "admin") {
+                // localStorage.setItem("admindata",JSON.stringify(a.result.role,a.result.email,a.result._id))
+                localStorage.setItem("admindata", JSON.stringify({
+                    role: a.result.role,
+                    email: a.result.email,
+                    id: a.result._id
+                }));
+                // alert("Successful")
+                navigate('/admindeshboard')
+            }else if (a.result.role === "user") {
+                navigate("/")
+            }
+            // alert("Successful")
+            // console.log("role", a.role)
+            // navigate('/admindeshboard'); 
         } catch (error) {
-            console.log(error)
+            console.error("Login failed:", error.response ? error.response.data : error.message);
         }
-
-        // try {
-        //     let data = axios.get("http://localhost:3005/user/signin")
-        //     let fetch_data = (await data).data;
-        //     let save = fetch_data.find((e) => e.email === email && e.password === password);
-        //     setsavedata("data", fetch_data);
-        //     navigate("/signup")
-        // } catch (error) {
-        //     console.log(error)
-        // }
     }
 
     return (
@@ -72,7 +77,7 @@ const Signin = () => {
                     </button>
                 </form>
                 <p className="text-center mt-3">
-                    Already have an account? <a href="/login">Login</a>
+                    Already have an account? <Link to="/signup">Signup</Link>
                 </p>
             </div>
         </div>

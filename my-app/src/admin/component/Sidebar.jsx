@@ -8,10 +8,10 @@ const Sidebar = () => {
 
         {/* <!-- Sidebar - Brand --> */}
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-          <div class="sidebar-brand-icon rotate-n-15">
+          {/* <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-laugh-wink"></i>
-          </div>
-          <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+          </div> */}
+          <div class="sidebar-brand-text mx-3">Fitness Tracker </div>
         </a>
 
         {/* <!-- Divider --> */}
@@ -19,9 +19,9 @@ const Sidebar = () => {
 
         {/* <!-- Nav Item - Dashboard --> */}
         <li class="nav-item active">
-          <a class="nav-link" href="index.html">
+          <Link class="nav-link" to="pagedeshboard">
             <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span></a>
+            <span>Dashboard</span></Link>
         </li>
 
         {/* <!-- Divider --> */}
@@ -36,7 +36,7 @@ const Sidebar = () => {
         <li class="nav-item">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
             aria-expanded="true" aria-controls="collapseTwo">
-            <i class="fas fa-fw fa-cog"></i>
+            <i class="fa-file"></i>
             <span>Workout </span>
           </a>
           <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -72,7 +72,7 @@ const Sidebar = () => {
         <li class="nav-item">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
             aria-expanded="true" aria-controls="collapseUtilities">
-            <i class="fas fa-fw fa-wrench"></i>
+            <i class="fa-file"></i>
             <span>Nutrition</span>
           </a>
           <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
@@ -88,7 +88,7 @@ const Sidebar = () => {
         <li class="nav-item">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwoa"
             aria-expanded="true" aria-controls="collapseTwoa">
-            <i class="fas fa-fw fa-cog"></i>
+            <i class="fa-file"></i>
             <span>Activity Notifications </span>
           </a>
           <div id="collapseTwoa" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -109,7 +109,7 @@ const Sidebar = () => {
         </div>
 
         {/* <!-- Nav Item - Pages Collapse Menu --> */}
-        <li class="nav-item">
+        {/* <li class="nav-item">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
             aria-expanded="true" aria-controls="collapsePages">
             <i class="fas fa-fw fa-folder"></i>
@@ -127,19 +127,19 @@ const Sidebar = () => {
               <a class="collapse-item" href="blank.html">Blank Page</a>
             </div>
           </div>
-        </li>
+        </li> */}
 
         {/* <!-- Nav Item - Charts --> */}
         <li class="nav-item">
           <Link class="nav-link" to="showcontect">
-            <i class="fas fa-fw fa-chart-area"></i>
+            <i class="fas fa-fw fa-folder"></i>
             <span>Show Contect</span></Link>
         </li>
 
         {/* <!-- Nav Item - Tables --> */}
         <li class="nav-item">
           <Link class="nav-link" to="showuser">
-            <i class="fas fa-fw fa-table"></i>
+            <i class="fas fa-fw fa-folder"></i>
             <span>Show User</span></Link>
         </li>
 

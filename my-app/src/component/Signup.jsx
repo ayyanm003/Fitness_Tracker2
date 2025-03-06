@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const navigate = useNavigate;
 
@@ -81,7 +81,7 @@ const Signup = () => {
                     </button>
                 </form>
                 <p className="text-center mt-3">
-                    Already have an account? <a href="/login">Login</a>
+                    Already have an account? <Link to="/signin">Login</Link>
                 </p>
             </div>
         </div>
