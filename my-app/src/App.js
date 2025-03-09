@@ -19,6 +19,9 @@ import Addworkout from './admin/component/Addworkout';
 import Showcontect from './admin/component/Showcontect';
 import Showuser from './admin/component/Showuser';
 import Pagedeshboard from './admin/component/Pagedeshboard';
+import Userpanel from './component/outlet/Userpanel';
+import Updeshboard from './component/userpanel/Updeshboard';
+import Upprofile from './component/userpanel/Upprofile';
 
 
 
@@ -51,8 +54,14 @@ function App() {
             <Route path='showcontect' element={<Showcontect />} />
             <Route path='showuser' element={<Showuser />} />
 
-
           </Route>
+
+          {/* User panel  */}
+          <Route path="/userpanel" element={<Userpanel/>}> 
+            <Route path='updeshboard' element={<Updeshboard/>} />
+            <Route path='upprofile' element={<Upprofile />} />
+          </Route>
+          {/* <Route path='/userpanel' element={<Userpanel/>} /> */}
         </Routes>
       </BrowserRouter>
 

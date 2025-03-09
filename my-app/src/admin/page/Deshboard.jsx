@@ -1,10 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Sidebar from '../component/Sidebar'
 import Navbar from '../component/Navbar'
 import Footer from '../component/Footer'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 
 const Deshboard = () => {
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if admin is logged in
+    const adminData = JSON.parse(localStorage.getItem("admindata"));
+
+    // If admin is not logged in, redirect to signin
+    if (!adminData || adminData.role !== "admin") {
+      navigate('/signin');
+    }
+  }, [navigate]);
+
   return (
     <>
       {/* <!-- Page Wrapper --> */}

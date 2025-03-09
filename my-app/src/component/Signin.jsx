@@ -33,7 +33,12 @@ const Signin = () => {
                 // alert("Successful")
                 navigate('/admindeshboard')
             }else if (a.result.role === "user") {
-                navigate("/")
+                localStorage.setItem("userdata", JSON.stringify({
+                    role: a.result.role,
+                    email: a.result.email,
+                    id: a.result._id
+                }));
+                navigate("/userpanel")
             }
             // alert("Successful")
             // console.log("role", a.role)
