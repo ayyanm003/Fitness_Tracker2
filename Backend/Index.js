@@ -11,6 +11,7 @@ app.use(express.json());
 const mongoose = require('mongoose');
 const nrouter = require('./Router/NutritionRoutes');
 const conrouter = require('./Router/ContectRoutes');
+const Progressrouter = require('./Router/ProgressRoutes');
 
 
 
@@ -19,6 +20,7 @@ app.use("/user", userroute);
 app.use("/rworkout", workoutrouter);
 app.use("/rnutrition", nrouter);
 app.use("/usercontect", conrouter);
+app.use("/progress", Progressrouter)
 // let workoutData = async function (){
 //     try {
 //     await workout.create({

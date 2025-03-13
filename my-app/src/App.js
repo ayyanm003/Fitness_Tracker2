@@ -22,6 +22,10 @@ import Pagedeshboard from './admin/component/Pagedeshboard';
 import Userpanel from './component/outlet/Userpanel';
 import Updeshboard from './component/userpanel/Updeshboard';
 import Upprofile from './component/userpanel/Upprofile';
+import Upaddworkout from './component/userpanel/Upaddworkout';
+import Upshowworkout from './component/userpanel/Upshowworkout';
+import Upnutrition from './component/userpanel/Upnutrition';
+import Upnutritionshow from './component/userpanel/Upnutritionshow';
 
 
 
@@ -60,6 +64,12 @@ function App() {
           <Route path="/userpanel" element={<Userpanel/>}> 
             <Route path='updeshboard' element={<Updeshboard/>} />
             <Route path='upprofile' element={<Upprofile />} />
+            <Route path='upaddworkout' element={<Upaddworkout />} />
+            <Route path='upshowworkout' element={<Upshowworkout />} />
+            <Route path='Upnutrition' element={<Upnutrition/>} />
+            <Route path='Upnutritionshow' element={<Upnutritionshow/>} />
+
+
           </Route>
           {/* <Route path='/userpanel' element={<Userpanel/>} /> */}
         </Routes>

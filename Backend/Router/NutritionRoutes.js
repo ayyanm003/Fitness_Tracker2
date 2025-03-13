@@ -1,16 +1,27 @@
 const express = require("express");
-const { addnutrition } = require("../Controller/NutritionController");
+const {
+    addNutrition,
+    getAllNutrition,
+    getUserNutrition,
+    updateNutrition,
+    deleteNutrition
+} = require("../Controller/NutritionController");
 
 const nrouter = express.Router();
 
-nrouter.post("/nutrition", addnutrition)
+// ✅ Nutrition create (add)
+nrouter.post("/nutrition", addNutrition);
 
-// nrouter.get("/nutrition", (req, res)=>{
-//     res.send("Nutrition");
-// })
+// ✅ Sab nutrition records fetch karna
+nrouter.get("/nutrition", getAllNutrition);
 
-// nrouter.post("/nutrition", (req, res)=>{
-//     res.send("Nutrition")
-// })
+// ✅ Specific user ka nutrition fetch karna (userId se)
+nrouter.get("/nutrition/:userId", getUserNutrition);
+
+// ✅ Nutrition update karna (id se)
+nrouter.put("/nutrition/:id", updateNutrition);
+
+// ✅ Nutrition delete karna (id se)
+nrouter.delete("/nutrition/:id", deleteNutrition);
 
 module.exports = nrouter;

@@ -1,11 +1,16 @@
 const express = require("express");
 // const workoutrouter = require('../Controller/WorkoutController');
-const { workoutController, conworkout } = require("../Controller/WorkoutController");
+const { workoutController, conworkout, getAllWorkouts, getUserWorkouts, deleteWorkout, updateWorkout } = require("../Controller/WorkoutController");
 
 
 const wrouter = express.Router();
 
 wrouter.post('/workout', conworkout);
+wrouter.get('/workouts', getAllWorkouts);
+wrouter.get('/workouts/:userId', getUserWorkouts)
+wrouter.put('/workout/:id', updateWorkout)
+wrouter.delete('/workout/:id', deleteWorkout)
+
 
 // wrouter.post("/workout", (req, res)=>{
 //     res.send("workoutrouter")

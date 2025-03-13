@@ -42,8 +42,8 @@ const Upsidebar = () => {
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Custom Components:</h6>
-                            <a class="collapse-item" to="addworkout">Add</a>
-                            <a class="collapse-item" href="cards.html">Show</a>
+                            <Link class="collapse-item" to="upaddworkout">Add</Link>
+                            <Link class="collapse-item" to="upshowworkout">Show</Link>
                         </div>
                     </div>
                 </li>
@@ -79,8 +79,8 @@ const Upsidebar = () => {
                         data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Custom Utilities:</h6>
-                            <a class="collapse-item" href="utilities-color.html">Add</a>
-                            <a class="collapse-item" href="utilities-border.html">Show</a>
+                            <Link class="collapse-item" to="Upnutrition">Add</Link>
+                            <Link class="collapse-item" to="Upnutritionshow">Show</Link>
                         </div>
                     </div>
                 </li>
