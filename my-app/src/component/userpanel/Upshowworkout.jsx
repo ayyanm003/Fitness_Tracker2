@@ -99,7 +99,7 @@ const Upshowworkout = () => {
                 <td>{exercise.reps}</td>
                 <td>{exercise.weight}</td>
                 <td>
-                  <button className="btn btn-danger btn-sm" onClick={() => deleteWorkout(workout._id, exercise._id)}>
+                  <button className="btn btn-danger btn-sm" >
                     Delete
                   </button>
                 </td>

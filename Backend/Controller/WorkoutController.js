@@ -26,11 +26,11 @@ const conworkout = async (req, res) => {
 
 const getAllWorkouts = async (req, res) => {
     try {
-        const workouts = await Workout.find();
+        const workouts = await workout.find();
         res.status(200).json(workouts);
     } catch (error) {
         console.error("Error fetching workouts:", error);
-        res.status(500).json({ message: "Something went wrong!" });
+        res.status(500).json({ message: error });
     }
 };
 
