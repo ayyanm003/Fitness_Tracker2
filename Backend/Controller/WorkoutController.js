@@ -89,7 +89,7 @@ const deleteWorkout = async (req, res) => {
 // ✅ Get workouts grouped by category (Pagination by category)
 const getWorkoutsByCategory = async (req, res) => {
     try {
-        let { page = 1, limit = 1 } = req.query;  // Limit is 1 category per page
+        let { page = 1, limit = 1, date } = req.query;  // Limit is 1 category per page
 
         page = parseInt(page);
         limit = parseInt(limit);
@@ -104,8 +104,25 @@ const getWorkoutsByCategory = async (req, res) => {
         // Get category for current page
         const categoryName = categories[page - 1];
 
-        // Fetch workouts under the selected category
-        const workouts = await Workout.find({ categoryName }).sort({ "exercises.0.name": 1 });
+        // ✅ Query Object (Category Filter)
+        const query = { categoryName };
+
+        // ✅ Date Filter Add Karo
+        if (date) {
+            const startOfDay = new Date(date);
+            startOfDay.setHours(0, 0, 0, 0);
+            const endOfDay = new Date(date);
+            endOfDay.setHours(23, 59, 59, 999);
+            query.createdAt = { $gte: startOfDay, $lte: endOfDay };
+        }
+
+        // Fetch workouts based on category and date filter
+        const workouts = await Workout.find(query).sort({ "exercises.0.name": 1 });
+
+        // ✅ Agar selected date pe koi workout nahi mila toh error bhejo
+        if (workouts.length === 0) {
+            return res.status(404).json({ message: "No workouts found for this date!" });
+        }
 
         res.status(200).json({
             page,
@@ -118,6 +135,7 @@ const getWorkoutsByCategory = async (req, res) => {
         res.status(500).json({ message: "Something went wrong!" });
     }
 };
+
 
 // ✅ Create a new workout with category
 const conworkout = async (req, res) => {

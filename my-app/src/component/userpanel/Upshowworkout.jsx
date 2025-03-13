@@ -7,6 +7,7 @@ const Upshowworkout = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [selectedDate, setSelectedDate] = useState(""); // Date filter state
+  const [errorMessage, setErrorMessage] = useState(""); // For error messages
 
   useEffect(() => {
     fetchWorkouts(page, selectedDate);
@@ -14,68 +15,100 @@ const Upshowworkout = () => {
 
   const fetchWorkouts = async (page, date) => {
     try {
+      setErrorMessage(""); // Reset error before making request
+
       const response = await axios.get(
         `http://localhost:3005/rworkout/workouts?page=${page}&limit=1${date ? `&date=${date}` : ""}`
       );
+
+      if (response.data.workouts.length === 0) {
+        setErrorMessage("❌ No workouts found for the selected date.");
+        setWorkouts([]);
+        return;
+      }
 
       setWorkouts(response.data.workouts);
       setCategoryName(response.data.categoryName);
       setTotalPages(response.data.totalPages);
     } catch (error) {
-      console.error("Error fetching workouts:", error);
+      setErrorMessage("❌ No Data Found. Please try again.");
+      setWorkouts([]); // Clear workouts if API call fails
     }
   };
 
   return (
     <div className="container mt-4">
-      <h2 className="text-center">Workout Category: {categoryName}</h2>
+      <h2 className="text-center text-primary fw-bold mb-4">
+        🏋️ Workout Category: <span className="text-dark">{categoryName || "N/A"}</span>
+      </h2>
 
       {/* Date Filter */}
-      <div className="mb-3 d-flex align-items-center justify-content-center">
-        <label className="me-2">Select Date:</label>
+      <div className="mb-4 d-flex align-items-center justify-content-center gap-3">
+        <label className="fw-bold">📅 Select Date:</label>
         <input
           type="date"
-          className="form-control w-auto"
+          className="form-control w-auto shadow-sm mx-2"
           value={selectedDate}
           onChange={(e) => setSelectedDate(e.target.value)}
         />
-        <button className="btn btn-secondary ms-2" onClick={() => setSelectedDate("")}>
+        <button className="btn btn-danger shadow-sm" onClick={() => setSelectedDate("")}>
           Clear
         </button>
       </div>
 
+      {/* Show Error Message */}
+      {errorMessage && (
+        <p className="text-danger text-center fs-5 fw-bold">{errorMessage}</p>
+      )}
+
       {/* Workout Table */}
-      <table className="table table-bordered">
-        <thead>
-          <tr>
-            <th>Workout Name</th>
-            <th>Sets</th>
-            <th>Reps</th>
-            <th>Weight (kg)</th>
-          </tr>
-        </thead>
-        <tbody>
-          {workouts.map(workout =>
-            workout.exercises.map(exercise => (
-              <tr key={exercise._id}>
-                <td>{exercise.name}</td>
-                <td>{exercise.sets}</td>
-                <td>{exercise.reps}</td>
-                <td>{exercise.weight}</td>
+      {workouts.length > 0 ? (
+        <div className="table-responsive">
+          <table className="table table-striped table-hover text-center">
+            <thead className="table-dark">
+              <tr>
+                <th>Workout Name</th>
+                <th>Sets</th>
+                <th>Reps</th>
+                <th>Weight (kg)</th>
               </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+            </thead>
+            <tbody>
+              {workouts.map((workout) =>
+                workout.exercises.map((exercise) => (
+                  <tr key={exercise._id}>
+                    <td className="fw-bold">{exercise.name}</td>
+                    <td>{exercise.sets}</td>
+                    <td>{exercise.reps}</td>
+                    <td>{exercise.weight}</td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        !errorMessage && <p className="text-center text-secondary fs-5">Loading workouts...</p>
+      )}
 
       {/* Pagination Controls */}
-      <div className="d-flex justify-content-between">
-        <button className="btn btn-primary" disabled={page === 1} onClick={() => setPage(page - 1)}>
-          Previous Category
+      <div className="d-flex justify-content-between mt-4">
+        <button
+          className="btn btn-outline-primary shadow-sm"
+          disabled={page === 1}
+          onClick={() => setPage(page - 1)}
+        >
+          ⬅️ Previous
         </button>
-        <span> Page {page} of {totalPages} </span>
-        <button className="btn btn-primary" disabled={page === totalPages} onClick={() => setPage(page + 1)}>
-          Next Category
+        <span className="fw-bold fs-5">
+          Page {page} of {totalPages}
+        </span>
+        <button
+          className="btn btn-outline-primary shadow-sm"
+          disabled={page === totalPages}
+          onClick={() => setPage(page + 1)}
+        >
+          Next ➡️
         </button>
       </div>
     </div>
