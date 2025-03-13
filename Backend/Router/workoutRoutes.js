@@ -1,27 +1,27 @@
 const express = require("express");
-// const workoutrouter = require('../Controller/WorkoutController');
-const { workoutController, conworkout, getAllWorkouts, getUserWorkouts, deleteWorkout, updateWorkout } = require("../Controller/WorkoutController");
+const router = express.Router();
+const {
+    conworkout,
+    getAllWorkouts,
+    getUserWorkouts,
+    updateWorkout,
+    deleteWorkout,
+    getWorkoutsByCategory
+} = require("../Controller/WorkoutController");
 
+// Create a workout
+router.post("/workouts", conworkout);
 
-const wrouter = express.Router();
+// Get all workouts (Paginated & Sorted)
+router.get("/workouts", getWorkoutsByCategory);
 
-wrouter.post('/workout', conworkout);
-wrouter.get('/workouts', getAllWorkouts);
-wrouter.get('/workouts/:userId', getUserWorkouts)
-wrouter.put('/workout/:id', updateWorkout)
-wrouter.delete('/workout/:id', deleteWorkout)
+// Get workouts for a specific user
+router.get("/workouts/:userId", getUserWorkouts);
 
+// Update a workout
+router.put("/workouts/:id", updateWorkout);
 
-// wrouter.post("/workout", (req, res)=>{
-//     res.send("workoutrouter")
-// })
-module.exports = wrouter;
+// Delete a workout
+router.delete("/workouts/:id", deleteWorkout);
 
-// const express = require("express");
-// const { workoutController, conworkout } = require("../Controller/WorkoutController"); // ✅ Import sahi karo
-
-// const wrouter = express.Router(); // ✅ Express Router ka instance banao
-
-// wrouter.post("/workout", conworkout); // ✅ Controller function use karo
-
-// module.exports = wrouter;
+module.exports = router;

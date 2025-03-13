@@ -1,40 +1,37 @@
-const workout = require("../Model/Workout");
-
-const conworkout = async (req, res) => {
-    const { userId, name, sets, reps, weight } = req.body;
-    try {
-        const result = await workout.create({
-            user: userId,  // User ka ID required hai
-            exercises: [{ name, sets, reps, weight }]
-        });
-
-        // const result = await workout.create({
-        //     name,
-        //     sets,
-        //     reps,
-        //     weight
-        // })
-        // res.send("hello")
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: "Something Went Wrong" })
-    }
-
-}
+const Workout = require("../Model/Workout");
 
 
 
+// ✅ Get all workouts with pagination & sorting
 const getAllWorkouts = async (req, res) => {
     try {
-        const workouts = await workout.find();
-        res.status(200).json(workouts);
+        let { page = 1, limit = 10 } = req.query;
+
+        page = parseInt(page);
+        limit = parseInt(limit);
+
+        const totalWorkouts = await Workout.countDocuments();
+        const totalPages = Math.ceil(totalWorkouts / limit);
+
+        const workouts = await Workout
+            .find()
+            .sort({ "exercises.0.name": 1 }) // Sorting by first exercise name
+            .skip((page - 1) * limit)
+            .limit(limit);
+
+        res.status(200).json({
+            page,
+            totalPages,
+            totalWorkouts,
+            workouts
+        });
     } catch (error) {
         console.error("Error fetching workouts:", error);
-        res.status(500).json({ message: error });
+        res.status(500).json({ message: "Something went wrong!" });
     }
 };
 
-// ✅ User specific workouts fetch karna
+// ✅ Get workouts for a specific user
 const getUserWorkouts = async (req, res) => {
     const { userId } = req.params;
 
@@ -47,7 +44,7 @@ const getUserWorkouts = async (req, res) => {
     }
 };
 
-// ✅ Workout update karna
+// ✅ Update a workout
 const updateWorkout = async (req, res) => {
     const { id } = req.params;
     const { name, sets, reps, weight } = req.body;
@@ -70,7 +67,7 @@ const updateWorkout = async (req, res) => {
     }
 };
 
-// ✅ Workout delete karna
+// ✅ Delete a workout
 const deleteWorkout = async (req, res) => {
     const { id } = req.params;
 
@@ -89,6 +86,56 @@ const deleteWorkout = async (req, res) => {
 };
 
 
+// ✅ Get workouts grouped by category (Pagination by category)
+const getWorkoutsByCategory = async (req, res) => {
+    try {
+        let { page = 1, limit = 1 } = req.query;  // Limit is 1 category per page
+
+        page = parseInt(page);
+        limit = parseInt(limit);
+
+        // Fetch unique category names
+        const categories = await Workout.distinct("categoryName");
+
+        if (page > categories.length) {
+            return res.status(404).json({ message: "No more categories available!" });
+        }
+
+        // Get category for current page
+        const categoryName = categories[page - 1];
+
+        // Fetch workouts under the selected category
+        const workouts = await Workout.find({ categoryName }).sort({ "exercises.0.name": 1 });
+
+        res.status(200).json({
+            page,
+            totalPages: categories.length,
+            categoryName,
+            workouts
+        });
+    } catch (error) {
+        console.error("Error fetching workouts by category:", error);
+        res.status(500).json({ message: "Something went wrong!" });
+    }
+};
+
+// ✅ Create a new workout with category
+const conworkout = async (req, res) => {
+    const { userId, categoryName, name, sets, reps, weight } = req.body;
+    try {
+        const result = await Workout.create({
+            user: userId,
+            categoryName, // Include category name
+            exercises: [{ name, sets, reps, weight }]
+        });
+
+        res.status(201).json({ message: "Workout added successfully!", result });
+    } catch (error) {
+        console.error("Error adding workout:", error);
+        res.status(500).json({ message: "Something went wrong!" });
+    }
+};
+
 
 
 module.exports = {
@@ -96,6 +143,6 @@ module.exports = {
     getAllWorkouts,
     getUserWorkouts,
     updateWorkout,
-    deleteWorkout
-}
-
+    deleteWorkout,
+    getWorkoutsByCategory
+};

@@ -3,111 +3,81 @@ import axios from "axios";
 
 const Upshowworkout = () => {
   const [workouts, setWorkouts] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [sortColumn, setSortColumn] = useState(null);
-  const [sortOrder, setSortOrder] = useState("asc");
+  const [categoryName, setCategoryName] = useState("");
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [selectedDate, setSelectedDate] = useState(""); // Date filter state
 
-  // ✅ Backend Se Workouts Fetch Karna
   useEffect(() => {
-    fetchWorkouts();
-  }, []);
+    fetchWorkouts(page, selectedDate);
+  }, [page, selectedDate]);
 
-  const fetchWorkouts = async () => {
+  const fetchWorkouts = async (page, date) => {
     try {
-      const response = await axios.get("http://localhost:3005/rworkout/workouts");
-      console.log(response.data)
-      setWorkouts(response.data);
+      const response = await axios.get(
+        `http://localhost:3005/rworkout/workouts?page=${page}&limit=1${date ? `&date=${date}` : ""}`
+      );
+
+      setWorkouts(response.data.workouts);
+      setCategoryName(response.data.categoryName);
+      setTotalPages(response.data.totalPages);
     } catch (error) {
       console.error("Error fetching workouts:", error);
     }
   };
 
-  // ✅ Workout Delete Karna
-  // const deleteWorkout = async (workoutId, exerciseId) => {
-  //   try {
-  //     await axios.delete(`http://localhost:3005/rworkout/workouts/${workoutId}/exercise/${exerciseId}`);
-  //     setWorkouts((prevWorkouts) =>
-  //       prevWorkouts.map((workout) => {
-  //         if (workout._id === workoutId) {
-  //           return {
-  //             ...workout,
-  //             exercises: workout.exercises.filter((exercise) => exercise._id !== exerciseId),
-  //           };
-  //         }
-  //         return workout;
-  //       })
-  //     );
-  //   } catch (error) {
-  //     console.error("Error deleting workout:", error);
-  //   }
-  // };
-
-  // ✅ Sorting Function
-  const sortTable = (column) => {
-    const newOrder = sortOrder === "asc" ? "desc" : "asc";
-    const sortedData = [...workouts].map((workout) => ({
-      ...workout,
-      exercises: [...workout.exercises].sort((a, b) => {
-        if (a[column] < b[column]) return newOrder === "asc" ? -1 : 1;
-        if (a[column] > b[column]) return newOrder === "asc" ? 1 : -1;
-        return 0;
-      }),
-    }));
-
-    setSortColumn(column);
-    setSortOrder(newOrder);
-    setWorkouts(sortedData);
-  };
-
-  // ✅ Filtered Workouts
-  const filteredWorkouts = workouts.map((workout) => ({
-    ...workout,
-    exercises: workout.exercises.filter((exercise) =>
-      exercise.name.toLowerCase().includes(searchTerm.toLowerCase())
-    ),
-  }));
-
   return (
     <div className="container mt-4">
-      <h2 className="text-center">Workout Table</h2>
+      <h2 className="text-center">Workout Category: {categoryName}</h2>
 
-      {/* Search Bar */}
-      <input
-        type="text"
-        className="form-control mb-3"
-        placeholder="Search workouts..."
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
+      {/* Date Filter */}
+      <div className="mb-3 d-flex align-items-center justify-content-center">
+        <label className="me-2">Select Date:</label>
+        <input
+          type="date"
+          className="form-control w-auto"
+          value={selectedDate}
+          onChange={(e) => setSelectedDate(e.target.value)}
+        />
+        <button className="btn btn-secondary ms-2" onClick={() => setSelectedDate("")}>
+          Clear
+        </button>
+      </div>
 
-      {/* Table */}
-      <table className="table table-bordered table-striped">
-        <thead className="thead-dark">
+      {/* Workout Table */}
+      <table className="table table-bordered">
+        <thead>
           <tr>
-            <th onClick={() => sortTable("name")}>Workout Name ⬍</th>
-            <th onClick={() => sortTable("sets")}>Sets ⬍</th>
-            <th onClick={() => sortTable("reps")}>Reps ⬍</th>
-            <th onClick={() => sortTable("weight")}>Weight (kg) ⬍</th>
-            <th>Actions</th>
+            <th>Workout Name</th>
+            <th>Sets</th>
+            <th>Reps</th>
+            <th>Weight (kg)</th>
           </tr>
         </thead>
         <tbody>
-          {filteredWorkouts.map((workout) =>
-            workout.exercises.map((exercise, index) => (
+          {workouts.map(workout =>
+            workout.exercises.map(exercise => (
               <tr key={exercise._id}>
                 <td>{exercise.name}</td>
                 <td>{exercise.sets}</td>
                 <td>{exercise.reps}</td>
                 <td>{exercise.weight}</td>
-                <td>
-                  <button className="btn btn-danger btn-sm" >
-                    Delete
-                  </button>
-                </td>
               </tr>
             ))
           )}
         </tbody>
       </table>
+
+      {/* Pagination Controls */}
+      <div className="d-flex justify-content-between">
+        <button className="btn btn-primary" disabled={page === 1} onClick={() => setPage(page - 1)}>
+          Previous Category
+        </button>
+        <span> Page {page} of {totalPages} </span>
+        <button className="btn btn-primary" disabled={page === totalPages} onClick={() => setPage(page + 1)}>
+          Next Category
+        </button>
+      </div>
     </div>
   );
 };

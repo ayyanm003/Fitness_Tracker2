@@ -1,19 +1,17 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const WorkoutSchema = new mongoose.Schema({
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+const workoutSchema = new mongoose.Schema({
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    categoryName: { type: String, required: true },  // Workout Category Name
     exercises: [
         {
-            name: String,
-            sets: Number,
-            reps: Number,
-            weight: Number
+            name: { type: String, required: true },
+            sets: { type: Number, required: true },
+            reps: { type: Number, required: true },
+            weight: { type: Number, required: true }
         }
     ],
-    date: { type: Date, default: Date.now }
+    createdAt: { type: Date, default: Date.now }
 });
 
-// const Workout = mongoose.model('Workout', WorkoutSchema);
-// module.exports = Workout;
-
-module.exports = mongoose.model("workout", WorkoutSchema)
+module.exports = mongoose.model("Workout", workoutSchema);
