@@ -231,10 +231,10 @@ const Upnavbar = () => {
                                 <i className="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Settings
                             </a>
-                            <a className="dropdown-item" href="#">
+                            <Link className="dropdown-item" to="upadded">
                                 <i className="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Activity Log
-                            </a>
+                                Added Data
+                            </Link>
                             {/* data-toggle="modal" data-target="#logoutModal" */}
                             <div className="dropdown-divider"></div>
                             <button className="dropdown-item" onClick={logout} >

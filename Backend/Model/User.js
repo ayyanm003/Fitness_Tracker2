@@ -2,27 +2,43 @@ const mongoose = require('mongoose');
 // const bcrypt = require('bcrypt');
 
 const UserSchema = new mongoose.Schema({
-    name: { 
-        type: String, 
-        required: true 
+    name: {
+        type: String,
+        required: true
     },
-    email: { 
-        type: String, 
-        required: true, 
-        unique: true 
+    email: {
+        type: String,
+        required: true,
+        unique: true
     },
-    password: { 
-        type: String, 
-        required: true 
+    password: {
+        type: String,
+        required: true
     },
-    role: { 
-        type: String, 
-        enum: ['user', 'admin'], 
-        default: 'user' 
+    role: {
+        type: String,
+        enum: ['user', 'admin'],
+        default: 'user'
     },
-    profilePicture: { 
-        type: String, 
-        default: 'default.png' 
+    profilePicture: {
+        type: String,
+        default: 'default.png'
+    },
+    height: {
+        type: String,
+        required: true
+    },
+    weight: {
+        type: String,
+        required: true
+    },
+    gender: {
+        type: String,
+        required: true
+    },
+    bmiindex: {
+        type: String,
+        required: true
     }
 }, { timestamps: true });
 
