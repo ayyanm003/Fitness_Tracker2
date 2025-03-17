@@ -187,29 +187,37 @@ const getWorkoutChartData = async (req, res) => {
     try {
         const { userId } = req.params;
 
-        console.log("📊 Fetching workout chart data for user:", userId);
+        // ✅ Workouts fetch karo userId ke mutabiq
+        const workouts = await Workout.find({ user: userId })
+            .select("date exercises")
+            .lean();
 
-        const workouts = await Workout.find({ user: userId }).select("date duration");
+        console.log("🔥 Raw Workout Data from DB:", workouts);
 
-        if (!workouts || workouts.length === 0) {
-            return res.status(404).json({ message: "No workout data found!", chartData: [] });
+        if (!workouts.length) {
+            return res.status(404).json({ message: "No workouts found!" });
         }
 
-        // ✅ Format data for chart
-        const chartData = workouts.map(workout => ({
-            date: workout.date ? workout.date.toISOString().split("T")[0] : "Unknown",
-            duration: Number(workout.duration) || 0
-        }));
+        // ✅ Chart data format
+        const chartData = workouts.flatMap(workout =>
+            workout.exercises.map(exercise => ({
+                date: workout.date ? workout.date.toISOString().split('T')[0] : "Unknown",
+                exercise: exercise.name || "Unnamed",
+                sets: exercise.sets || 0  // ✅ Sets ki value rakhna
+            }))
+        );
 
-        console.log("✅ Processed Workout Chart Data:", chartData);
+        console.log("📊 Processed Workout Chart Data:", chartData);
 
         res.status(200).json({ chartData });
-
     } catch (error) {
         console.error("❌ Error fetching workout chart data:", error);
-        res.status(500).json({ message: "Something went wrong!", error: error.message });
+        res.status(500).json({ message: "Something went wrong!" });
     }
 };
+
+
+
 
 
 module.exports = {

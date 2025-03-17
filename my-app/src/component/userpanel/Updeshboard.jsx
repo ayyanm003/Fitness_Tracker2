@@ -5,6 +5,7 @@ import {
   LineChart, Line 
 } from "recharts";
 import { toast } from "react-toastify";
+import BMICard from "./BMICARD";
 
 const Updeshboard = () => {
   const [nutritionData, setNutritionData] = useState([]);
@@ -24,9 +25,9 @@ const Updeshboard = () => {
   
       const userId = userData.id;
   
-      // ✅ Fetch nutrition data
+      // ✅ Nutrition data fetch karo
       const nutritionResponse = await axios.get(`http://localhost:3005/rnutrition/${userId}`);
-      console.log("Nutrition Data:", nutritionResponse.data); // Debugging log
+      console.log("Nutrition Data:", nutritionResponse.data);
   
       const nutritionChartData = nutritionResponse.data.flatMap(nutrition =>
         nutrition.meals.map(meal => ({
@@ -37,16 +38,17 @@ const Updeshboard = () => {
         }))
       );
   
-      // ✅ Fetch workout data using the new API
+      // ✅ Workout data fetch with sets
       const workoutResponse = await axios.get(`http://localhost:3005/rworkout/workout-chart/${userId}`);
-      console.log("Workout API Response:", workoutResponse.data); // Debugging log
+      console.log("Workout API Response:", workoutResponse.data);
   
       const workoutChartData = workoutResponse.data.chartData.map(workout => ({
-        date: workout.date || "Unknown", // Ensure date exists
-        Workout: workout.duration || 0, // Ensure duration exists
+        date: workout.date || "Unknown", 
+        exercise: workout.exercise || "Unnamed", 
+        sets: workout.sets || 0,  // ✅ Sets ko yaha rakho
       }));
   
-      console.log("Processed Workout Data:", workoutChartData); // Debugging log
+      console.log("Processed Workout Data:", workoutChartData);
   
       setNutritionData(nutritionChartData);
       setWorkoutData(workoutChartData);
@@ -54,13 +56,16 @@ const Updeshboard = () => {
       console.error("❌ Error fetching data:", error);
       toast.error("Failed to load user data!");
     }
-  };
+};
+
+
 
   
   
 
   return (
     <div className="container mt-4">
+      <BMICard />
       <h2 className="text-center mb-4">📊 User Nutrition & Workout Dashboard</h2>
 
       {/* Bar Chart for Nutrition Data */}
@@ -78,21 +83,21 @@ const Updeshboard = () => {
       </ResponsiveContainer>
 
       {/* Line Chart for Workout Duration */}
-      <h3 className="text-center mt-4">🏋️‍♂️ Workout Duration</h3>
-      {/* Show line chart only if workout data exists */}
+      <h3 className="text-center mt-4">🏋️‍♂️ Workout Sets per Exercise</h3>
 {workoutData.length > 0 ? (
   <ResponsiveContainer width="100%" height={400}>
     <LineChart data={workoutData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-      <XAxis dataKey="date" />
+      <XAxis dataKey="exercise" />  {/* ✅ Exercise name X-axis pe */}
       <YAxis />
       <Tooltip />
       <Legend />
-      <Line type="monotone" dataKey="Workout" stroke="#ff8042" />
+      <Line type="monotone" dataKey="sets" stroke="#ff8042" />  {/* ✅ Sets dikhao */}
     </LineChart>
   </ResponsiveContainer>
 ) : (
   <p className="text-center text-muted">🚫 No workout data available</p>
 )}
+
 
     </div>
   );
