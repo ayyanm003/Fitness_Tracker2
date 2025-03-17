@@ -1,5 +1,5 @@
 const Workout = require("../Model/Workout");
-
+const mongoose = require("mongoose")
 
 
 // ✅ Get all workouts with pagination & sorting
@@ -31,18 +31,47 @@ const getAllWorkouts = async (req, res) => {
     }
 };
 
-// ✅ Get workouts for a specific user
 const getUserWorkouts = async (req, res) => {
-    const { userId } = req.params;
-
     try {
-        const userWorkouts = await Workout.find({ user: userId });
-        res.status(200).json(userWorkouts);
+        const { userId } = req.params;
+        let { page = 1, limit = 10 } = req.query;
+
+        page = parseInt(page);
+        limit = parseInt(limit);
+
+        // Validate userId format
+        if (!userId || userId.length !== 24) {
+            return res.status(400).json({ message: "Invalid User ID!" });
+        }
+
+        // Count total workouts for this user
+        const totalWorkouts = await Workout.countDocuments({ user: userId });
+        const totalPages = Math.ceil(totalWorkouts / limit);
+
+        // Fetch paginated workouts for the user
+        const workouts = await Workout
+            .find({ user: userId })
+            .sort({ "exercises.0.name": 1 }) // Sorting by first exercise name
+            .skip((page - 1) * limit)
+            .limit(limit);
+
+        if (!workouts.length) {
+            return res.status(404).json({ message: "No workouts found!" });
+        }
+
+        res.status(200).json({
+            page,
+            totalPages,
+            totalWorkouts,
+            workouts
+        });
     } catch (error) {
-        console.error("Error fetching user workouts:", error);
-        res.status(500).json({ message: "Something went wrong!" });
+        console.error("❌ Error fetching user workouts:", error);
+        res.status(500).json({ message: "Something went wrong!", error: error.message });
     }
 };
+
+
 
 // ✅ Update a workout
 const updateWorkout = async (req, res) => {
@@ -154,6 +183,33 @@ const conworkout = async (req, res) => {
     }
 };
 
+const getWorkoutChartData = async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        console.log("📊 Fetching workout chart data for user:", userId);
+
+        const workouts = await Workout.find({ user: userId }).select("date duration");
+
+        if (!workouts || workouts.length === 0) {
+            return res.status(404).json({ message: "No workout data found!", chartData: [] });
+        }
+
+        // ✅ Format data for chart
+        const chartData = workouts.map(workout => ({
+            date: workout.date ? workout.date.toISOString().split("T")[0] : "Unknown",
+            duration: Number(workout.duration) || 0
+        }));
+
+        console.log("✅ Processed Workout Chart Data:", chartData);
+
+        res.status(200).json({ chartData });
+
+    } catch (error) {
+        console.error("❌ Error fetching workout chart data:", error);
+        res.status(500).json({ message: "Something went wrong!", error: error.message });
+    }
+};
 
 
 module.exports = {
@@ -162,5 +218,6 @@ module.exports = {
     getUserWorkouts,
     updateWorkout,
     deleteWorkout,
-    getWorkoutsByCategory
+    getWorkoutsByCategory,
+    getWorkoutChartData
 };

@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Upaddworkout = () => {
   const [categoryName, setCategoryName] = useState("");
@@ -75,8 +76,13 @@ const Upaddworkout = () => {
         "http://localhost:3005/rworkout/workouts",
         { userId, categoryName, name: search, sets, reps, weight },
         { headers: { "Content-Type": "application/json" } }
-      );
+      ).then(()=>{
+        toast.success("Workout Added Successfully");
       navigate("../upshowworkout");
+
+      }).catch((e)=>{
+        console.log(e)
+      });
     } catch (error) {
       console.error("Error adding workout:", error);
     }

@@ -6,6 +6,8 @@ const Navbar = () => {
 
     const logout = () => {
         let ls_data = localStorage.removeItem("admindata")
+        let ls_data2 = localStorage.removeItem("userdata")
+
         navigate('/signin')
     }
 

@@ -6,7 +6,8 @@ const {
     getUserWorkouts,
     updateWorkout,
     deleteWorkout,
-    getWorkoutsByCategory
+    getWorkoutsByCategory,
+    getWorkoutChartData
 } = require("../Controller/WorkoutController");
 
 // Create a workout
@@ -24,4 +25,5 @@ router.put("/workouts/:id", updateWorkout);
 // Delete a workout
 router.delete("/workouts/:id", deleteWorkout);
 
+router.get("/workout-chart/:userId", getWorkoutChartData);
 module.exports = router;

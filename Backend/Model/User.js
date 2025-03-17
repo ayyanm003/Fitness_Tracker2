@@ -26,19 +26,19 @@ const UserSchema = new mongoose.Schema({
     },
     height: {
         type: String,
-        required: true
+       
     },
     weight: {
         type: String,
-        required: true
+        
     },
     gender: {
         type: String,
-        required: true
+        
     },
     bmiindex: {
         type: String,
-        required: true
+        
     }
 }, { timestamps: true });
 

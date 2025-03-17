@@ -8,49 +8,33 @@ const Upshowworkout = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [selectedDate, setSelectedDate] = useState(""); // Date filter state
   const [errorMessage, setErrorMessage] = useState(""); // For error messages
-  const [userId, setUserId] = useState(null); // Store logged-in user's ID
 
   useEffect(() => {
-    // Retrieve logged-in user ID from localStorage
-    const storedUserData = localStorage.getItem("userdata");
-    if (storedUserData) {
-      const parsedUser = JSON.parse(storedUserData);
-      if (parsedUser.id) {
-        setUserId(parsedUser.id);
-      }
-    }
-  }, []);
+    fetchWorkouts(page, selectedDate);
+  }, [page, selectedDate]);
 
-  useEffect(() => {
-    if (userId !== null) {
-      fetchWorkouts(userId, page, selectedDate);
-    }
-  }, [userId, page, selectedDate]);
-  
-
-  const fetchWorkouts = async (userId, page, date) => {
+  const fetchWorkouts = async (page, date) => {
     try {
       setErrorMessage(""); // Reset error before making request
-  
+
       const response = await axios.get(
-        `http://localhost:3005/rworkout/workouts/${userId}?page=${page}&limit=5${date ? `&date=${date}` : ""}`
+        `http://localhost:3005/rworkout/workouts?page=${page}&limit=1${date ? `&date=${date}` : ""}`
       );
-  
+
       if (response.data.workouts.length === 0) {
         setErrorMessage("No workouts found for the selected date.");
         setWorkouts([]);
         return;
       }
-  
+
       setWorkouts(response.data.workouts);
       setCategoryName(response.data.categoryName);
       setTotalPages(response.data.totalPages);
     } catch (error) {
-      setErrorMessage("No Data Found. Please try again.");
+      setErrorMessage(" No Data Found. Please try again.");
       setWorkouts([]); // Clear workouts if API call fails
     }
   };
-  
 
   return (
     <div className="container mt-4">

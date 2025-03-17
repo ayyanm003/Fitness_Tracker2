@@ -1,76 +1,82 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+
 
 const Upnutrition = () => {
   const [nutritionData, setNutritionData] = useState({
-    user: '', // Yahan user ka ID aayega (agar required ho)
+    user: '',
     meals: [{ name: '', calories: '', protein: '', carbs: '', fats: '' }],
   });
+  useEffect(() => {
+    const storedUserData = localStorage.getItem("userdata"); // 🎯 "userdata" fetch karo
+    if (storedUserData) {
+      const parsedUser = JSON.parse(storedUserData);
+      if (parsedUser.id) {
+        setNutritionData((prev) => ({ ...prev, user: parsedUser.id }));
+      }
+    }
+  }, []);
+   // ✅ Dependency array empty hai, ek baar hi chalega
+  
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-
-  // Debounce ke liye state
+  const [successMessage, setSuccessMessage] = useState('');
   const [mealQuery, setMealQuery] = useState('');
 
-  // Meal ka naam change hone par API se data fetch karega (debounce effect)
   useEffect(() => {
     const timer = setTimeout(() => {
       if (mealQuery) {
         fetchNutritionData(mealQuery);
       }
-    }, 1000); // 1 second ka debounce time
-
+    }, 1000);
     return () => clearTimeout(timer);
   }, [mealQuery]);
 
-  // API se meal ka nutrition data fetch karna
   const fetchNutritionData = async (mealName) => {
     setLoading(true);
     setErrorMessage('');
-    
+    setSuccessMessage('');
+
     try {
-      const response = await axios.get(
+      const response = await axios.post(
         `https://trackapi.nutritionix.com/v2/natural/nutrients`,
+        { query: mealName },
         {
           headers: {
             "Content-Type": "application/json",
-            "x-app-id": "c425ac69",  // Replace with Nutritionix API Key
-            "x-app-key": "50b5882cbfcbd5b8e20ebea4f82ae737	",
+            "x-app-id": "c425ac69",
+            "x-app-key": "59169b04cfc3d6ad6a03cfc19bcd5add",
           },
-          data: { query: mealName }
         }
       );
 
-      const food = response.data.foods[0];
-      if (!food) {
-        setErrorMessage("No nutrition data found!");
-        setLoading(false);
-        return;
-      }
+      if (response.data.foods.length > 0) {
+        const food = response.data.foods[0];
 
-      // Update nutrition state
-      setNutritionData({
-        ...nutritionData,
-        meals: [
-          {
+        setNutritionData((prevData) => ({
+          ...prevData,
+          meals: [{
             name: food.food_name,
             calories: food.nf_calories || 0,
             protein: food.nf_protein || 0,
             carbs: food.nf_total_carbohydrate || 0,
             fats: food.nf_total_fat || 0,
-          },
-        ],
-      });
-
+          }],
+        }));
+      } else {
+        setErrorMessage("No nutrition data found!");
+      }
     } catch (error) {
-      setErrorMessage("Error fetching nutrition data!");
-      console.error(error);
+      console.error("API Error:", error);
+      setErrorMessage("Error fetching nutrition data! Please check your API key and try again.");
     } finally {
       setLoading(false);
     }
   };
 
-  // Input change handle karna
   const handleChange = (e, index) => {
     const { name, value } = e.target;
     const updatedMeals = [...nutritionData.meals];
@@ -82,33 +88,47 @@ const Upnutrition = () => {
     }
   };
 
-  // Form submit karna
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await fetch('http://localhost:3005/rnutrition/nutrition', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(nutritionData),
-      });
+    setLoading(true);
+    setErrorMessage('');
+    setSuccessMessage('');
 
-      const data = await response.json();
-      if (response.ok) {
-        alert('Nutrition Data Added Successfully!');
-        setNutritionData({
-          user: '',
-          meals: [{ name: '', calories: '', protein: '', carbs: '', fats: '' }],
+    try {
+        if (!nutritionData.meals.length || !nutritionData.meals[0].name) {
+            toast.error("Please enter at least one meal!");
+            setLoading(false);
+            return;
+        }
+
+        const response = await fetch('http://localhost:3005/rnutrition/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                userId: nutritionData.user, // 🔄 Change "user" to "userId"
+                meals: nutritionData.meals
+            }),
         });
-      } else {
-        alert('Error: ' + data.message);
-      }
+
+        const data = await response.json();
+
+        if (response.ok) {
+            toast.success("Nutrition Data Added Successfully!");
+            setNutritionData((prev) => ({
+                user: prev.user,
+                meals: [{ name: '', calories: '', protein: '', carbs: '', fats: '' }],
+            }));
+        } else {
+            toast.error(`Error: ${data.message}`);
+        }
     } catch (error) {
-      console.error('Error:', error);
-      alert('Something went wrong!');
+        console.error('Error:', error);
+        toast.error('Something went wrong!');
+    } finally {
+        setLoading(false);
     }
-  };
+};
+
 
   return (
     <div className="container">
@@ -134,8 +154,9 @@ const Upnutrition = () => {
                     />
                   </div>
 
-                  {loading && <p>Loading nutrition data...</p>}
+                  {loading && <p>⏳ Loading nutrition data...</p>}
                   {errorMessage && <p className="text-danger">{errorMessage}</p>}
+                  {successMessage && <p className="text-success">{successMessage}</p>}
 
                   <div className="form-group">
                     <input
@@ -181,8 +202,8 @@ const Upnutrition = () => {
                       required
                     />
                   </div>
-                  <button type="submit" className="btn btn-primary btn-user btn-block">
-                    Add Nutrition
+                  <button type="submit" className="btn btn-primary btn-user btn-block" disabled={loading}>
+                    {loading ? "Adding..." : "Add Nutrition"}
                   </button>
                 </form>
                 <hr />
@@ -191,6 +212,7 @@ const Upnutrition = () => {
           </div>
         </div>
       </div>
+      <ToastContainer/>
     </div>
   );
 };

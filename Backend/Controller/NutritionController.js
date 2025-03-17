@@ -1,5 +1,5 @@
 const Nutrition = require("../Model/Nutrition");
-
+const mongoose = require("mongoose")
 // ✅ Nutrition data create karna
 const addNutrition = async (req, res) => {
     const { userId, meals } = req.body;
@@ -18,15 +18,28 @@ const addNutrition = async (req, res) => {
 };
 
 // ✅ Sabhi nutrition records fetch karna
+
+
 const getAllNutrition = async (req, res) => {
     try {
         const nutritionData = await Nutrition.find().populate("user");
-        res.status(200).json(nutritionData);
+        
+        // Ensure each meal gets its associated date
+        const formattedNutritionData = nutritionData.map((item) => ({
+            ...item.toObject(), // Spread the main nutrition object
+            meals: item.meals.map((meal) => ({
+                ...meal,
+                date: item.date // Assign the main document's date to each meal
+            }))
+        }));
+
+        res.status(200).json(formattedNutritionData);
     } catch (error) {
         console.error("Error fetching nutrition data:", error);
         res.status(500).json({ message: "Something went wrong!" });
     }
 };
+
 
 // ✅ Specific user ka nutrition data fetch karna
 const getUserNutrition = async (req, res) => {
@@ -65,27 +78,31 @@ const updateNutrition = async (req, res) => {
 };
 
 // ✅ Nutrition delete karna
-const deleteNutrition = async (req, res) => {
-    const { id } = req.params;
-
-    try {
-        const deletedNutrition = await Nutrition.findByIdAndDelete(id);
-
-        if (!deletedNutrition) {
-            return res.status(404).json({ message: "Nutrition record not found!" });
-        }
-
-        res.status(200).json({ message: "Nutrition deleted successfully!" });
-    } catch (error) {
-        console.error("Error deleting nutrition data:", error);
-        res.status(500).json({ message: "Something went wrong!" });
+const handleDeleteNutrition = async (nutritionId) => {
+    if (!nutritionId) {
+      console.error("Missing nutrition ID for delete operation.");
+      return;
     }
-};
+  
+    try {
+      await axios.delete(`http://localhost:3005/rnutrition/nutrition/${nutritionId}`);
+  
+      // Update state after deletion
+      setNutritionData((prevData) => prevData.filter((nutrition) => nutrition._id !== nutritionId));
+  
+      toast.success("Nutrition record deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting nutrition record:", error.response?.data || error);
+      toast.error("Failed to delete nutrition record!");
+    }
+  };
+  
+
 
 module.exports = {
     addNutrition,
     getAllNutrition,
     getUserNutrition,
     updateNutrition,
-    deleteNutrition
+    handleDeleteNutrition
 };

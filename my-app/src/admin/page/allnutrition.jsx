@@ -9,35 +9,21 @@ const UpnutritionShow = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
- 
     fetchNutritionData();
   }, []);
 
   const fetchNutritionData = async () => {
     try {
-        const userData = JSON.parse(localStorage.getItem("userdata"));
-        console.log(userData.id)
-        if (!userData || !userData.id) {
-            toast.error("User not logged in!");
-            return;
-        }
-
-        const userId = userData.id; // Extract user ID
-
-        // ✅ Corrected API call
-        const response = await axios.get(`http://localhost:3005/rnutrition/${userId}`);
-
-        setNutritionData(response.data);
-        setLoading(false);
+      const response = await axios.get("http://localhost:3005/rnutrition/");
+      console.log("Fetched Nutrition Data:", response.data);
+      setNutritionData(response.data);
+      setLoading(false);
     } catch (error) {
-        console.error("Error fetching nutrition data:", error);
-        toast.error("Failed to load data!");
-        setLoading(false);
+      console.error("Error fetching nutrition data:", error);
+      toast.error("Failed to load data!");
+      setLoading(false);
     }
-};
-
-
-
+  };
 
   /*** DELETE Meal ***/
   const handleDeleteMeal = async (nutritionId, mealId) => {

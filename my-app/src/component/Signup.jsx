@@ -28,7 +28,7 @@ const Signup = () => {
                 headers: {
                     "Content-Type": "application/json"
                 }
-            }).then(() => { console.log("object") }).catch((a) => { console.log(a) });
+            }).then(() => { console.log("User Registered Successfully") }).catch((a) => { console.log(a) });
             alert("Successful")
             navigate("/signin");
         } catch (error) {
