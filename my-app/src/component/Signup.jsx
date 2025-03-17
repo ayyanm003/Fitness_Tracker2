@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
 
-const navigate = useNavigate;
+
 
 const Signup = () => {
+
+    const navigate = useNavigate();
 
     const [name, setname] = useState("")
     const [email, setemail] = useState("");
@@ -21,14 +23,14 @@ const Signup = () => {
 
         try {
             let res = axios.post("http://localhost:3005/user/register", {
-                name : name, email : email, password : password,
+                name: name, email: email, password: password,
             }, {
                 headers: {
                     "Content-Type": "application/json"
                 }
-            }).then(()=>{console.log("object")}).catch((a)=>{console.log(a)});
+            }).then(() => { console.log("object") }).catch((a) => { console.log(a) });
             alert("Successful")
-            navigate("/");
+            navigate("/signin");
         } catch (error) {
             console.log(error);
         }
@@ -81,7 +83,7 @@ const Signup = () => {
                     </button>
                 </form>
                 <p className="text-center mt-3">
-                    Already have an account? <Link to="/signin">Login</Link>
+                    Already have an account? <Link to="/signin">Signin</Link>
                 </p>
             </div>
         </div>
