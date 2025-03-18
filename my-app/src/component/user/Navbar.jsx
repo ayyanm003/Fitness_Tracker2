@@ -15,10 +15,10 @@ const Navbar = () => {
 		</button>
 		<div className="collapse text-center navbar-collapse" id="navbarsid">
 			<ul className="navbar-nav mx-auto">
-				<li className="nav-item active">
+				{/* <li className="nav-item active">
 					<a className="nav-link" href="index.html">Home <span className="sr-only">(current)</span></a>
-				</li>
-				<li className="nav-item dropdown">
+				</li> */}
+				{/* <li className="nav-item dropdown">
 					<a className="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true"
 						aria-expanded="false">Pages.</a>
 					<ul className="dropdown-menu">
@@ -26,11 +26,11 @@ const Navbar = () => {
 						<li><a className="dropdown-item" href="trainer.html">Trainer</a></li>
 						<li><a className="dropdown-item" href="course.html">Courses</a></li>
 					</ul>
-				</li>
-				<li className="nav-item"><a className="nav-link" href="service.html">Services</a></li>
+				</li> */}
+				{/* <li className="nav-item"><a className="nav-link" href="service.html">Services</a></li> */}
 				{/* <li className="nav-item"><a className="nav-link" href="pricing.html">Memebership</a></li> */}
 				<li className="nav-item"><Link className="nav-link" to="/signin" >Signin</Link></li>
-				<li className="nav-item dropdown">
+				{/* <li className="nav-item dropdown">
 					<a className="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true"
 						aria-expanded="false">Blog.</a>
 					<ul className="dropdown-menu">
@@ -38,7 +38,7 @@ const Navbar = () => {
 						<li><a className="dropdown-item" href="blog-sidebar.html">Blog Sidebar</a></li>
 						<li><a className="dropdown-item" href="blog-single.html">Blog Details</a></li>
 					</ul>
-				</li>
+				</li> */}
 				<li className="nav-item"><a className="nav-link" href="/usercontect">Contact</a></li>
 			</ul>
 			{/* <div className="my-md-0 ml-lg-4 mt-4 mt-lg-0 ml-auto text-lg-right mb-3 mb-lg-0">
