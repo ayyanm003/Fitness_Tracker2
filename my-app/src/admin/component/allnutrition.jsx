@@ -3,7 +3,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const UpnutritionShow = () => {
+const AllNutrition = () => {
   const [nutritionData, setNutritionData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -140,4 +140,4 @@ const UpnutritionShow = () => {
   );
 };
 
-export default UpnutritionShow;
+export default AllNutrition;

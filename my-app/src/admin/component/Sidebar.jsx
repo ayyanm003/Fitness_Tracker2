@@ -34,18 +34,11 @@ const Sidebar = () => {
 
         {/* <!-- Nav Item - Pages Collapse Menu --> */}
         <li class="nav-item">
-          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-            aria-expanded="true" aria-controls="collapseTwo">
+          <a class="nav-link" href="allworkout">
             <i class="fa-file"></i>
-            <span>Workout </span>
+            <span>Workout</span>
           </a>
-          <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-              <h6 class="collapse-header">Custom Components:</h6>
-              <Link class="collapse-item" to="addworkout">Add</Link>
-              <a class="collapse-item" href="cards.html">Show</a>
-            </div>
-          </div>
+         
         </li>
 
 
@@ -70,43 +63,26 @@ const Sidebar = () => {
 
         {/* <!-- Nav Item - Utilities Collapse Menu --> */}
         <li class="nav-item">
-          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-            aria-expanded="true" aria-controls="collapseUtilities">
+          <a class="nav-link" href="allnutrition">
             <i class="fa-file"></i>
             <span>Nutrition</span>
           </a>
-          <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-            data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-              <h6 class="collapse-header">Custom Utilities:</h6>
-              <a class="collapse-item" href="utilities-color.html">Add</a>
-              <a class="collapse-item" href="utilities-border.html">Show</a>
-            </div>
-          </div>
+         
         </li>
 
         <li class="nav-item">
-          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwoa"
-            aria-expanded="true" aria-controls="collapseTwoa">
+          <a class="nav-link" href="showsteps" >
             <i class="fa-file"></i>
-            <span>Activity Notifications </span>
+            <span>Step</span>
           </a>
-          <div id="collapseTwoa" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-              <h6 class="collapse-header">Custom Components:</h6>
-              <a class="collapse-item" href="buttons.html">Add</a>
-              <a class="collapse-item" href="cards.html">Show</a>
-            </div>
-          </div>
+         
         </li>
 
         {/* <!-- Divider --> */}
         <hr class="sidebar-divider" />
 
         {/* <!-- Heading --> */}
-        <div class="sidebar-heading">
-          Addons
-        </div>
+       
 
         {/* <!-- Nav Item - Pages Collapse Menu --> */}
         {/* <li class="nav-item">
@@ -133,7 +109,7 @@ const Sidebar = () => {
         <li class="nav-item">
           <Link class="nav-link" to="showcontect">
             <i class="fas fa-fw fa-folder"></i>
-            <span>Show Contect</span></Link>
+            <span>Show Contact</span></Link>
         </li>
 
         {/* <!-- Nav Item - Tables --> */}

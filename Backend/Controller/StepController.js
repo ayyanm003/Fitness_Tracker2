@@ -29,3 +29,30 @@ exports.getStepsByUser = async (req, res) => {
         res.status(500).json({ message: "Server error", error });
     }
 };
+exports.getAllUsersSteps = async (req, res) => {
+    try {
+        let { page = 1, limit = 10 } = req.query;
+
+        page = parseInt(page);
+        limit = parseInt(limit);
+
+        const totalSteps = await Step.countDocuments();
+        const totalPages = Math.ceil(totalSteps / limit);
+
+        const steps = await Step.find()
+            .populate("userId", "name email") // Populate user details
+            .sort({ date: -1 }) // Latest steps first
+            .skip((page - 1) * limit)
+            .limit(limit);
+
+        res.status(200).json({
+            page,
+            totalPages,
+            totalSteps,
+            steps
+        });
+    } catch (error) {
+        console.error("Error fetching step records:", error);
+        res.status(500).json({ message: "Something went wrong!" });
+    }
+};

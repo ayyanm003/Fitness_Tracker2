@@ -31,7 +31,7 @@ const Signin = () => {
                     id: a.result._id
                 }));
                 // alert("Successful")
-            navigate("/userpanel",{state:{role:a.result.role}})
+            navigate("/admindeshboard",{state:{role:a.result.role}})
 
                 
             }else if (a.result.role === "user") {

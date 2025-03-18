@@ -2,19 +2,25 @@ const Workout = require("../Model/Workout");
 const mongoose = require("mongoose")
 
 
-// ✅ Get all workouts with pagination & sorting
+
 const getAllWorkouts = async (req, res) => {
     try {
-        let { page = 1, limit = 10 } = req.query;
+        let { page = 1, limit = 10, category } = req.query;
 
         page = parseInt(page);
         limit = parseInt(limit);
 
-        const totalWorkouts = await Workout.countDocuments();
+        let filter = {};
+
+        if (category) {
+            filter.categoryName = category; // Filter category wise
+        }
+
+        const totalWorkouts = await Workout.countDocuments(filter);
         const totalPages = Math.ceil(totalWorkouts / limit);
 
         const workouts = await Workout
-            .find()
+            .find(filter)
             .sort({ "exercises.0.name": 1 }) // Sorting by first exercise name
             .skip((page - 1) * limit)
             .limit(limit);
@@ -30,6 +36,9 @@ const getAllWorkouts = async (req, res) => {
         res.status(500).json({ message: "Something went wrong!" });
     }
 };
+
+
+
 
 const getUserWorkouts = async (req, res) => {
     try {
@@ -170,6 +179,16 @@ const conworkout = async (req, res) => {
         res.status(500).json({ message: "Something went wrong!" });
     }
 };
+const getWorkoutCategories = async (req, res) => {
+    try {
+        const categories = await Workout.distinct("categoryName"); // Unique categories
+        res.status(200).json({ categories });
+    } catch (error) {
+        console.error("Error fetching categories:", error);
+        res.status(500).json({ message: "Something went wrong!" });
+    }
+};
+
 const getUserWorkoutCategories = async (req, res) => {
     try {
         const { userId } = req.params;
@@ -237,6 +256,7 @@ module.exports = {
     deleteWorkout,
     getUserWorkoutsByCategory,
     getWorkoutChartData,
-    getUserWorkoutCategories
+    getUserWorkoutCategories,
+    getWorkoutCategories
 
 };

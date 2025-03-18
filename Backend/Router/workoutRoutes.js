@@ -8,12 +8,15 @@ const {
     deleteWorkout,
     getUserWorkoutsByCategory,
     getWorkoutChartData,
+    getWorkoutCategories,
     getUserWorkoutCategories
 } = require("../Controller/WorkoutController");
 
 // Create a workout
 router.post("/workouts", conworkout);
 router.get("/",getAllWorkouts);
+router.get("/categories", getWorkoutCategories);
+
 
 router.get("/workouts/:userId/categories", getUserWorkoutCategories);
 

@@ -29,6 +29,9 @@ import Upnutritionshow from './component/userpanel/Upnutritionshow';
 import Upadded from './component/userpanel/Upadded';
 import StepTracker from './component/userpanel/StepAdd';
 import StepHistory from './component/userpanel/ShowStep';
+import AllWorkout from './admin/component/allworkout';
+import AllNutrition from './admin/component/allnutrition';
+import AllSteps from './admin/component/AllSteps';
 
 
 
@@ -57,9 +60,11 @@ function App() {
           {/* admin outlet  */}
           <Route path='/admindeshboard' element={<Deshboard />}>
             <Route index element={<Pagedeshboard />} />
-            <Route path='addworkout' element={<Addworkout />} />
+            <Route path='allworkout' element={<AllWorkout />} />
+            <Route path='allnutrition' element={<AllNutrition />} />
             <Route path='showcontect' element={<Showcontect />} />
             <Route path='showuser' element={<Showuser />} />
+            <Route path='showsteps' element={<AllSteps />} />
 
           </Route>
 
