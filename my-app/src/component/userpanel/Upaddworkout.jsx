@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 
 const Upaddworkout = () => {
   const [categoryName, setCategoryName] = useState("");
-  const [name, setName] = useState("");
+  const [name, setName] = useState(""); // Not used directly
   const [sets, setSets] = useState("");
   const [reps, setReps] = useState("");
   const [weight, setWeight] = useState("");
@@ -13,14 +13,23 @@ const Upaddworkout = () => {
 
   const navigate = useNavigate();
 
-  // ✅ Local Storage se userdata get karo aur ID extract karo
+  // ✅ Get user ID from localStorage safely
   useEffect(() => {
-    const storedUserData = localStorage.getItem("userdata");
-    if (storedUserData) {
-      const parsedUserData = JSON.parse(storedUserData);
-      if (parsedUserData && parsedUserData.id) {
-        setUserId(parsedUserData.id);
+    try {
+      const storedUserData = localStorage.getItem("userdata");
+      if (storedUserData) {
+        const parsedUserData = JSON.parse(storedUserData);
+        console.log("Parsed User Data:", parsedUserData); // Debugging
+        if (parsedUserData && parsedUserData.id) {
+          setUserId(parsedUserData.id);
+        } else {
+          console.warn("User ID not found in localStorage data!");
+        }
+      } else {
+        console.warn("No userdata found in localStorage.");
       }
+    } catch (error) {
+      console.error("Error parsing localStorage userdata:", error);
     }
   }, []);
 
@@ -38,15 +47,15 @@ const Upaddworkout = () => {
   const [filteredExercises, setFilteredExercises] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  // Update exercise options based on selected category
+  // ✅ Update exercise list based on category selection
   useEffect(() => {
     if (categoryName) {
       setFilteredExercises(exercises[categoryName] || []);
-      setSearch(""); // Reset selected exercise when category changes
+      setSearch(""); // Reset search when category changes
     }
   }, [categoryName]);
 
-  // Search function
+  // ✅ Handle exercise search
   const handleSearch = (event) => {
     const value = event.target.value.toLowerCase();
     setSearch(value);
@@ -58,7 +67,7 @@ const Upaddworkout = () => {
     setIsDropdownOpen(true);
   };
 
-  // Select Item
+  // ✅ Handle exercise selection
   const handleSelect = (exercise) => {
     setSearch(exercise);
     setIsDropdownOpen(false);
@@ -66,8 +75,14 @@ const Upaddworkout = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     if (!userId) {
-      alert("User ID not found in local storage!");
+      toast.error("User ID not found! Please log in again.");
+      return;
+    }
+
+    if (!categoryName || !search || !sets || !reps || !weight) {
+      toast.warning("Please fill in all fields before submitting.");
       return;
     }
 
@@ -76,15 +91,17 @@ const Upaddworkout = () => {
         "http://localhost:3005/rworkout/workouts",
         { userId, categoryName, name: search, sets, reps, weight },
         { headers: { "Content-Type": "application/json" } }
-      ).then(()=>{
+      ).then(() => {
         toast.success("Workout Added Successfully");
-      navigate("../upshowworkout");
-
-      }).catch((e)=>{
-        console.log(e)
+        navigate("../upshowworkout");
+      }).catch((err) => {
+        console.error("API Error:", err);
+        toast.error("Failed to add workout. Try again.");
       });
+
     } catch (error) {
-      console.error("Error adding workout:", error);
+      console.error("Request Error:", error);
+      toast.error("Something went wrong!");
     }
   };
 
@@ -108,6 +125,7 @@ const Upaddworkout = () => {
                   placeholder="Sets"
                   value={sets}
                   onChange={(e) => setSets(e.target.value)}
+                  min="1"
                 />
               </div>
               <div className="col-md-6 mb-3">
@@ -117,6 +135,7 @@ const Upaddworkout = () => {
                   placeholder="Reps"
                   value={reps}
                   onChange={(e) => setReps(e.target.value)}
+                  min="1"
                 />
               </div>
             </div>
@@ -129,6 +148,7 @@ const Upaddworkout = () => {
                 placeholder="Weight (kg)"
                 value={weight}
                 onChange={(e) => setWeight(e.target.value)}
+                min="0"
               />
             </div>
             <div className="mb-3">

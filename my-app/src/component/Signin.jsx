@@ -31,14 +31,18 @@ const Signin = () => {
                     id: a.result._id
                 }));
                 // alert("Successful")
-                navigate('/admindeshboard')
+            navigate("/userpanel",{state:{role:a.result.role}})
+
+                
             }else if (a.result.role === "user") {
                 localStorage.setItem("userdata", JSON.stringify({
                     role: a.result.role,
                     email: a.result.email,
                     id: a.result._id
                 }));
-                navigate("/userpanel")
+            navigate("/userpanel",{state:{role:a.result.role}})
+
+                
             }
             // alert("Successful")
             // console.log("role", a.role)

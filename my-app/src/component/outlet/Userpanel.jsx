@@ -12,9 +12,10 @@ const Userpanel = () => {
         const userData = JSON.parse(localStorage.getItem("userdata"));
     
         // If admin is not logged in, redirect to signin
-        if (!userData || userData.role !== "user") {
+    if (!userData || userData.role !== "user" ) {
           navigate('/signin');
         }
+        
       }, [navigate]);
 
     return (
