@@ -27,6 +27,8 @@ import Upshowworkout from './component/userpanel/Upshowworkout';
 import Upnutrition from './component/userpanel/Upnutrition';
 import Upnutritionshow from './component/userpanel/Upnutritionshow';
 import Upadded from './component/userpanel/Upadded';
+import StepTracker from './component/userpanel/StepAdd';
+import StepHistory from './component/userpanel/ShowStep';
 
 
 
@@ -70,6 +72,9 @@ function App() {
             <Route path='Upnutrition' element={<Upnutrition/>} />
             <Route path='Upnutritionshow' element={<Upnutritionshow/>} />
             <Route path='upadded' element={<Upadded/>} />
+            <Route path='stepadd' element={<StepTracker/>} />
+            <Route path='setpshow' element={<StepHistory/>} />
+
 
           </Route>
           {/* <Route path='/userpanel' element={<Userpanel/>} /> */}

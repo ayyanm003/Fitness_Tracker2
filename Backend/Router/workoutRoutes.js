@@ -6,16 +6,20 @@ const {
     getUserWorkouts,
     updateWorkout,
     deleteWorkout,
-    getWorkoutsByCategory,
-    getWorkoutChartData
+    getUserWorkoutsByCategory,
+    getWorkoutChartData,
+    getUserWorkoutCategories
 } = require("../Controller/WorkoutController");
 
 // Create a workout
 router.post("/workouts", conworkout);
+router.get("/",getAllWorkouts);
 
-// Get all workouts (Paginated & Sorted)
-router.get("/workouts", getWorkoutsByCategory);
+router.get("/workouts/:userId/categories", getUserWorkoutCategories);
 
+module.exports = router;
+
+router.get("/workouts/category/:userId", getUserWorkoutsByCategory);
 // Get workouts for a specific user
 router.get("/workouts/:userId", getUserWorkouts);
 

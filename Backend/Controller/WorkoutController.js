@@ -115,55 +115,43 @@ const deleteWorkout = async (req, res) => {
 };
 
 
-// ✅ Get workouts grouped by category (Pagination by category)
-const getWorkoutsByCategory = async (req, res) => {
+
+
+const getUserWorkoutsByCategory = async (req, res) => {
     try {
-        let { page = 1, limit = 1, date } = req.query;  // Limit is 1 category per page
+        const { userId } = req.params;
+        const { categoryName, page = 1, limit = 5 } = req.query;
 
-        page = parseInt(page);
-        limit = parseInt(limit);
+        console.log("🔥 API Request Received:");
+        console.log("✅ User ID:", userId);
+        console.log("✅ Category Name:", categoryName);
+        console.log("✅ Page:", page);
 
-        // Fetch unique category names
-        const categories = await Workout.distinct("categoryName");
+        // Pagination logic
+        const skip = (page - 1) * limit;
 
-        if (page > categories.length) {
-            return res.status(404).json({ message: "No more categories available!" });
+        // 🔍 Query workouts by user & category
+        let query = { user: userId };
+        if (categoryName) {
+            query.categoryName = categoryName;
         }
 
-        // Get category for current page
-        const categoryName = categories[page - 1];
+        console.log("🔍 Querying MongoDB with:", query);
 
-        // ✅ Query Object (Category Filter)
-        const query = { categoryName };
+        const workouts = await Workout.find(query).skip(skip).limit(limit);
 
-        // ✅ Date Filter Add Karo
-        if (date) {
-            const startOfDay = new Date(date);
-            startOfDay.setHours(0, 0, 0, 0);
-            const endOfDay = new Date(date);
-            endOfDay.setHours(23, 59, 59, 999);
-            query.createdAt = { $gte: startOfDay, $lte: endOfDay };
-        }
-
-        // Fetch workouts based on category and date filter
-        const workouts = await Workout.find(query).sort({ "exercises.0.name": 1 });
-
-        // ✅ Agar selected date pe koi workout nahi mila toh error bhejo
         if (workouts.length === 0) {
-            return res.status(404).json({ message: "No workouts found for this date!" });
+            return res.status(404).json({ message: "No workouts found!" });
         }
 
-        res.status(200).json({
-            page,
-            totalPages: categories.length,
-            categoryName,
-            workouts
-        });
+        res.status(200).json({ workouts, totalPages: Math.ceil(workouts.length / limit) });
     } catch (error) {
-        console.error("Error fetching workouts by category:", error);
-        res.status(500).json({ message: "Something went wrong!" });
+        console.error("❌ Error Fetching Workouts:", error);
+        res.status(500).json({ message: "Error fetching workouts" });
     }
 };
+
+
 
 
 // ✅ Create a new workout with category
@@ -180,6 +168,27 @@ const conworkout = async (req, res) => {
     } catch (error) {
         console.error("Error adding workout:", error);
         res.status(500).json({ message: "Something went wrong!" });
+    }
+};
+const getUserWorkoutCategories = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        console.log("🔥 Fetching categories for user:", userId);
+
+        const workouts = await Workout.find({ user: userId });
+
+        if (!workouts.length) {
+            return res.status(404).json({ message: "No workouts found" });
+        }
+
+        // Extract unique categories
+        const uniqueCategories = [...new Set(workouts.map(w => w.categoryName))];
+
+        console.log("✅ Found categories:", uniqueCategories);
+        res.status(200).json({ categories: uniqueCategories });
+    } catch (error) {
+        console.error("❌ Error fetching categories:", error);
+        res.status(500).json({ message: "Error fetching categories" });
     }
 };
 
@@ -226,6 +235,8 @@ module.exports = {
     getUserWorkouts,
     updateWorkout,
     deleteWorkout,
-    getWorkoutsByCategory,
-    getWorkoutChartData
+    getUserWorkoutsByCategory,
+    getWorkoutChartData,
+    getUserWorkoutCategories
+
 };

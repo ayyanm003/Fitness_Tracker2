@@ -4,6 +4,8 @@ const app = express();
 app.use(cors()); 
 const userroute = require('./Router/userRoutes');
 const workoutrouter = require('./Router/workoutRoutes');
+const steproute = require('./Router/StepRoute');
+
 const User = require('./Model/User');
 // const workoutData = require("./Model/Workout")
 // require('dotenv').config();
@@ -21,6 +23,8 @@ app.use("/rworkout", workoutrouter);
 app.use("/rnutrition", nrouter);
 app.use("/usercontect", conrouter);
 app.use("/progress", Progressrouter)
+app.use("/step", steproute)
+
 // let workoutData = async function (){
 //     try {
 //     await workout.create({

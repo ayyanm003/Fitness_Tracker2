@@ -90,7 +90,7 @@
 // ✅ Register User
 const registerUser = async (req, res) => {
     try {
-        const { name, email, password, 
+        const { name, email, password, gender,
             profilePicture 
         } = req.body;
 
@@ -108,6 +108,7 @@ const registerUser = async (req, res) => {
             name,
             email,
             password: hashedPassword,
+            gender,
             profilePicture
         });
 

@@ -11,6 +11,7 @@ const Signup = () => {
     const [name, setname] = useState("")
     const [email, setemail] = useState("");
     const [password, setpassword] = useState("");
+    const [gender, setGender] = useState('');
 
     const handel = (e) => {
         e.preventDefault();
@@ -23,7 +24,7 @@ const Signup = () => {
 
         try {
             let res = axios.post("http://localhost:3005/user/register", {
-                name: name, email: email, password: password,
+                name: name, email: email, password: password,gender:gender
             }, {
                 headers: {
                     "Content-Type": "application/json"
@@ -78,6 +79,15 @@ const Signup = () => {
                             required
                         />
                     </div>
+                    <div className="mb-3">
+                    <label className="form-label">Gender</label>
+
+                                <select className="form-control" value={gender} onChange={(e) => setGender(e.target.value)}>
+                                    <option value="">Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
                     <button type="submit" className="btn btn-primary w-100">
                         Signup
                     </button>
