@@ -56,3 +56,15 @@ exports.getAllUsersSteps = async (req, res) => {
         res.status(500).json({ message: "Something went wrong!" });
     }
 };
+exports.getAllSteps = async (req, res) => {
+    try {
+        const totalSteps = await Step.aggregate([{ $group: { _id: null, totalSteps: { $sum: "$steps" } } }]);
+
+        res.status(200).json({
+            totalSteps: totalSteps.length > 0 ? totalSteps[0].totalSteps : 0
+        });
+    } catch (error) {
+        console.error("Error fetching step count:", error);
+        res.status(500).json({ message: "Something went wrong!" });
+    }
+};

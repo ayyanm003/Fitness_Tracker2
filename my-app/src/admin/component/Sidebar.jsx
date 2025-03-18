@@ -1,142 +1,33 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { FaTachometerAlt, FaDumbbell, FaUtensils, FaWalking, FaPhone, FaUsers } from "react-icons/fa";
 
 const Sidebar = () => {
   return (
-    <>
-      <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <nav className="sidebar bg-gradient-primary sidebar-dark">
+      <div className="sidebar-brand text-center py-3">
+        <h4 className="text-white fw-bold">🏋️ Fitness Tracker</h4>
+      </div>
 
-        {/* <!-- Sidebar - Brand --> */}
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-          {/* <div class="sidebar-brand-icon rotate-n-15">
-            <i class="fas fa-laugh-wink"></i>
-          </div> */}
-          <div class="sidebar-brand-text mx-3">Fitness Tracker </div>
-        </a>
-
-        {/* <!-- Divider --> */}
-        <hr class="sidebar-divider my-0" />
-
-        {/* <!-- Nav Item - Dashboard --> */}
-        <li class="nav-item active">
-          <Link class="nav-link" to="pagedeshboard">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span></Link>
-        </li>
-
-        {/* <!-- Divider --> */}
-        <hr class="sidebar-divider" />
-
-        {/* <!-- Heading --> */}
-        <div class="sidebar-heading">
-          Interface
-        </div>
-
-        {/* <!-- Nav Item - Pages Collapse Menu --> */}
-        <li class="nav-item">
-          <a class="nav-link" href="allworkout">
-            <i class="fa-file"></i>
-            <span>Workout</span>
-          </a>
-         
-        </li>
-
-
-
-        {/* <li class="nav-item">
-          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-            aria-expanded="true" aria-controls="collapseTwo">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Activity Notifications</span>
-          </a>
-          <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-              <h6 class="collapse-header">Custom Components:</h6>
-              <a class="collapse-item" href="buttons.html">Add</a>
-              <a class="collapse-item" href="cards.html">Show</a>
-            </div>
-          </div>
-        </li> */}
-
-
-
-
-        {/* <!-- Nav Item - Utilities Collapse Menu --> */}
-        <li class="nav-item">
-          <a class="nav-link" href="allnutrition">
-            <i class="fa-file"></i>
-            <span>Nutrition</span>
-          </a>
-         
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="showsteps" >
-            <i class="fa-file"></i>
-            <span>Step</span>
-          </a>
-         
-        </li>
-
-        {/* <!-- Divider --> */}
-        <hr class="sidebar-divider" />
-
-        {/* <!-- Heading --> */}
-       
-
-        {/* <!-- Nav Item - Pages Collapse Menu --> */}
-        {/* <li class="nav-item">
-          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-            aria-expanded="true" aria-controls="collapsePages">
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Pages</span>
-          </a>
-          <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-              <h6 class="collapse-header">Login Screens:</h6>
-              <a class="collapse-item" href="login.html">Login</a>
-              <a class="collapse-item" href="register.html">Register</a>
-              <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-              <div class="collapse-divider"></div>
-              <h6 class="collapse-header">Other Pages:</h6>
-              <a class="collapse-item" href="404.html">404 Page</a>
-              <a class="collapse-item" href="blank.html">Blank Page</a>
-            </div>
-          </div>
-        </li> */}
-
-        {/* <!-- Nav Item - Charts --> */}
-        <li class="nav-item">
-          <Link class="nav-link" to="showcontect">
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Show Contact</span></Link>
-        </li>
-
-        {/* <!-- Nav Item - Tables --> */}
-        <li class="nav-item">
-          <Link class="nav-link" to="showuser">
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Show User</span></Link>
-        </li>
-
-        {/* <!-- Divider --> */}
-        <hr class="sidebar-divider d-none d-md-block" />
-
-        {/* <!-- Sidebar Toggler (Sidebar) --> */}
-        {/* <div class="text-center d-none d-md-inline">
-          <button class="rounded-circle border-0" id="sidebarToggle"></button>
-        </div> */}
-
-        {/* <!-- Sidebar Message --> */}
-        {/* <div class="sidebar-card d-none d-lg-flex">
-          <img class="sidebar-card-illustration mb-2" src="img/undraw_rocket.svg" alt="..." />
-          <p class="text-center mb-2"><strong>SB Admin Pro</strong> is packed with premium features, components, and more!</p>
-          <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-pro">Upgrade to Pro!</a>
-        </div> */}
-
+      <ul className="nav flex-column">
+        <SidebarItem to="" icon={<FaTachometerAlt /> } text=" Dashboard" />
+        <SidebarItem to="allworkout" icon={<FaDumbbell /> } text=" Workouts" />
+        <SidebarItem to="allnutrition" icon={<FaUtensils /> } text=" Nutrition" />
+        <SidebarItem to="showsteps" icon={<FaWalking /> } text=" Steps" />
+        <SidebarItem to="showcontect" icon={<FaPhone /> } text=" Contacts" />
+        <SidebarItem to="showuser" icon={<FaUsers /> } text=" Users" />
       </ul>
-    </>
+    </nav>
   );
 };
+
+const SidebarItem = ({ to, icon, text }) => (
+  <li className="nav-item">
+    <Link className="nav-link d-flex align-items-center" to={to}>
+      <span className="me-2">{icon}</span>
+      {text}
+    </Link>
+  </li>
+);
 
 export default Sidebar;
