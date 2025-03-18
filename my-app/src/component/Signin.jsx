@@ -1,9 +1,31 @@
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
+
 const Signin = () => {
 
     const navigate = useNavigate();
+    
+    useEffect(() => {
+        // Check if admin or user is logged in
+        const userData = JSON.parse(localStorage.getItem("userdata"));
+        const adminData = JSON.parse(localStorage.getItem("admindata"));
+      
+        // If userData exists and role is "user", navigate to user panel
+        if (userData && userData.role === "user") {
+          navigate('/userpanel');
+        } 
+        // If adminData exists and role is "admin", navigate to admin dashboard
+        else if (adminData && adminData.role === "admin") {
+          navigate('/admindeshboard');
+        } 
+        // If neither userData nor adminData exists, stay on signin page
+        else {
+          navigate('/signin');
+        }
+      
+      }, [navigate]);
+      
 
     const [email, setemail] = useState("");
     const [password, setpassword] = useState("");

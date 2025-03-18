@@ -34,7 +34,7 @@ const User = () => {
 
                 {/* <!-- Section About start --> */}
                 
-                <About/>
+                {/* <About/> */}
 
                 {/* <!-- Section About End --> */}
 
